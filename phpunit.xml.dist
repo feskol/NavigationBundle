@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/9.3/phpunit.xsd"
-         backupGlobals="false"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.5/phpunit.xsd"
          colors="true"
          bootstrap="vendor/autoload.php"
-         failOnRisky="true"
-         failOnWarning="true"
->
+         failOnWarning="true">
+
     <php>
         <ini name="error_reporting" value="-1" />
     </php>
@@ -19,9 +17,13 @@
     </testsuites>
 
     <coverage>
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
         <report>
-            <text output="php://stdout"/>
-            <clover output="coverage.xml"/>
+            <text outputFile="coverage.txt"/>
+            <clover outputFile="coverage.xml"/>
+            <html outputDirectory="coverage-html"/>
         </report>
     </coverage>
 </phpunit>
