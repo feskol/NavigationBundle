@@ -1,0 +1,81 @@
+{# @var \Feskol\Navigation\Contracts\LinkInterface item #}
+
+{%- block root -%}
+    {% set navigationItems = items %}
+    {{- block('navigation') -}}
+{%- endblock -%}
+
+{%- block navigation -%}
+    <ul>
+        {{- block('children') -}}
+    </ul>
+{%- endblock -%}
+
+{%- block sub_navigation -%}
+    {{- block('navigation') -}}
+{%- endblock -%}
+
+{%- block children -%}
+    {%- for item in items -%}
+        {{- block('item') -}}
+    {%- endfor -%}
+{%- endblock -%}
+
+{%- block item -%}
+    <li {{ block('item_attributes') }}>
+        {{- block('item_content') -}}
+    </li>
+{%- endblock -%}
+
+{%- block item_attributes -%}
+    {%- set classes = [] %}
+    {%- if item.activeChildren -%}
+        {% set classes = classes|merge(['active-children']) %}
+    {%- endif -%}
+    {%- if item.active -%}
+        {% set classes = classes|merge(['active']) %}
+    {%- endif -%}
+    {{- ' class="'~ classes|join(' ') ~'"' -}}
+{%- endblock -%}
+
+{%- block item_content -%}
+    {{- block('item_tag') -}}
+    {%- if item.hasChildren() -%}
+        {% set navigationItems = item.children %}
+        {{- block('sub_navigation') -}}
+    {%- endif -%}
+{%- endblock -%}
+
+{%- block item_tag -%}
+    {%- if item.href is not empty and (item.active or options.activeAsLink) -%}
+        {{- block('item_tag_link') -}}
+    {%- else -%}
+        {{- block('item_tag_span') -}}
+    {%- endif -%}
+{%- endblock -%}
+
+{%- block item_tag_link -%}
+    <a {{- block('item_tag_link_default_attributes') -}}>
+        {{- block('label') -}}
+    </a>
+{%- endblock -%}
+
+{%- block item_tag_link_default_attributes -%}
+    {{- item.href ? ' href="'~ item.href ~'"' -}}
+    {{- item.hreflang ? ' hreflang="'~ item.hreflang ~'"' -}}
+    {{- item.target ? ' target="'~ item.target ~'"' -}}
+    {{- item.rel ? ' rel="'~ item.rel ~'"' -}}
+    {{- item.type ? ' type="'~ item.type ~'"' -}}
+    {{- item.referrerPolicy ? ' referrerpolicy="'~ item.referrerPolicy ~'"' -}}
+    {{- item.media ? ' media="'~ item.media ~'"' -}}
+    {{- item.ping ? ' ping="'~ item.ping ~'"' -}}
+    {{- item.download ? ' download' -}}
+{%- endblock -%}
+
+{%- block item_tag_span -%}
+    <span>{{ block('label') }}</span>
+{%- endblock -%}
+
+{%- block label -%}
+    {{ item.title|trans }}
+{%- endblock -%}
