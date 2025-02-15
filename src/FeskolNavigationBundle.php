@@ -53,8 +53,8 @@ class FeskolNavigationBundle extends AbstractBundle
     public function build(ContainerBuilder $container): void
     {
         $container
-            ->addCompilerPass(new AutoTagNavigationPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 100)
-            ->addCompilerPass(new NavigationPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 50)
+            ->addCompilerPass(new NavigationPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 100)
+            ->addCompilerPass(new AutoTagNavigationPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 50)
             ->addCompilerPass(new NavigationRegisterPass())
         ;
     }
