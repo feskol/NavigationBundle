@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the NavigationBundle project.
  *
@@ -12,7 +13,6 @@ namespace Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler;
 
 use Feskol\Bundle\NavigationBundle\Navigation\Attribute\Navigation;
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistry;
-use ReflectionClass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -36,7 +36,7 @@ class NavigationCompilerPass implements CompilerPassInterface
                 continue;
             }
 
-            $reflection = new ReflectionClass($class);
+            $reflection = new \ReflectionClass($class);
             $attributes = $reflection->getAttributes(Navigation::class);
             foreach ($attributes as $attribute) {
                 /** @var Navigation $instance */
@@ -46,7 +46,7 @@ class NavigationCompilerPass implements CompilerPassInterface
                     $instance->getName(),
                     new Reference($id),
                     $instance->getTemplate(),
-                    $instance->getActiveAsLink()
+                    $instance->getActiveAsLink(),
                 ]);
             }
         }

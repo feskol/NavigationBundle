@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the NavigationBundle project.
  *
@@ -21,9 +22,8 @@ class NavigationRuntimeExtension implements RuntimeExtensionInterface
 {
     public function __construct(
         private readonly NavigationRegistry $navigationRegistry,
-        private readonly Environment        $twig,
-    )
-    {
+        private readonly Environment $twig,
+    ) {
     }
 
     /**
@@ -35,16 +35,16 @@ class NavigationRuntimeExtension implements RuntimeExtensionInterface
     {
         $navigation = $this->navigationRegistry->getNavigation($name);
         if (null === $navigation) {
-            throw new \RuntimeException(sprintf('The navigation with name "%s" does not exist.', $name));
+            throw new \RuntimeException(\sprintf('The navigation with name "%s" does not exist.', $name));
         }
 
         $template = $this->navigationRegistry->getTemplate($name);
 
-        $context = array_merge($parameters, [
+        $context = \array_merge($parameters, [
             'items' => $navigation->getItems(),
             'options' => [
                 'activeAsLink' => $this->navigationRegistry->getActiveAsLink($name),
-            ]
+            ],
         ]);
 
         return $this->twig->render($template, $context);

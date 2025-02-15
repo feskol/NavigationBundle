@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the NavigationBundle project.
  *
@@ -18,7 +19,7 @@ use Feskol\Navigation\Contracts\LinkInterface;
 interface NavigationInterface
 {
     /**
-     * Returns the links from the Navigation
+     * Returns the links from the Navigation.
      *
      * @return LinkInterface[]
      */

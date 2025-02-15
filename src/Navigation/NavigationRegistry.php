@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the NavigationBundle project.
  *
@@ -21,18 +22,16 @@ class NavigationRegistry
 
     public function __construct(
         private readonly string $defaultTemplate,
-        private readonly bool   $defaultActiveAsLink,
-    )
-    {
+        private readonly bool $defaultActiveAsLink,
+    ) {
     }
 
     public function addNavigation(
-        string              $name,
+        string $name,
         NavigationInterface $navigation,
-        ?string             $template = null,
-        bool                $activeAsLink = false
-    ): void
-    {
+        ?string $template = null,
+        bool $activeAsLink = false,
+    ): void {
         $this->navigations[$name] = $navigation;
         $this->templates[$name] = $template;
         $this->activeAsLink[$name] = $activeAsLink;

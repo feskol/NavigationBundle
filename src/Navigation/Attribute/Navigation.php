@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the NavigationBundle project.
  *
@@ -17,16 +18,15 @@ namespace Feskol\Bundle\NavigationBundle\Navigation\Attribute;
 class Navigation
 {
     /**
-     * @param string $name The unique name of the Navigation
-     * @param string|null $template The template to render from. If NULL, the default template will be used => default can be changed in config
-     * @param bool|null $activeAsLink If the active link should be rendered as a link (<a>-tag) or not. If NULL, the default value will be used => default can be changed in config
+     * @param string      $name         The unique name of the Navigation
+     * @param string|null $template     The template to render from. If NULL, the default template will be used => default can be changed in config
+     * @param bool|null   $activeAsLink If the active link should be rendered as a link (<a>-tag) or not. If NULL, the default value will be used => default can be changed in config
      */
     public function __construct(
-        private string  $name,
+        private string $name,
         private ?string $template = null,
-        private ?bool   $activeAsLink = null
-    )
-    {
+        private ?bool $activeAsLink = null,
+    ) {
     }
 
     public function getName(): string

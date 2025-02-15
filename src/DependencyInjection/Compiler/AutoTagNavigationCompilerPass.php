@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the NavigationBundle project.
  *
@@ -11,13 +12,12 @@
 namespace Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler;
 
 use Feskol\Bundle\NavigationBundle\Navigation\Attribute\Navigation;
-use ReflectionClass;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class AutoTagNavigationCompilerPass implements CompilerPassInterface
 {
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
         foreach ($container->getDefinitions() as $id => $definition) {
             $class = $definition->getClass();
@@ -25,7 +25,7 @@ class AutoTagNavigationCompilerPass implements CompilerPassInterface
                 continue;
             }
 
-            $reflection = new ReflectionClass($class);
+            $reflection = new \ReflectionClass($class);
             if ($reflection->getAttributes(Navigation::class)) {
                 // Auto-tag any service that has #[Navigation]
                 $definition->addTag('feskol.navigation');
