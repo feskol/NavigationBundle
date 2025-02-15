@@ -13,7 +13,7 @@ namespace Feskol\Bundle\NavigationBundle\Tests\Fixtures\DependencyInjection\Comp
 
 class NavigationRegistryWithoutAddNavigation
 {
-    public function getNavigation()
+    public function getNavigation(): void
     {
     }
 }

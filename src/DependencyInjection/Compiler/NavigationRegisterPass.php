@@ -38,22 +38,13 @@ class NavigationRegisterPass implements CompilerPassInterface
         // check the required methods of the NavigationRegistryInterface
         foreach (['addNavigation', 'getNavigation'] as $method) {
             if (!\method_exists($registryDef->getClass(), $method)) {
-                throw new InvalidConfigurationException(sprintf(
-                    'The NavigationRegistry service "%s" must implement the "%s" method. Please implement the "%s" interface in your service class.',
-                    $registryDef->getClass(),
-                    $method,
-                    NavigationRegistryInterface::class
-                ));
+                throw new InvalidConfigurationException(\sprintf('The NavigationRegistry service "%s" must implement the "%s" method. Please implement the "%s" interface in your service class.', $registryDef->getClass(), $method, NavigationRegistryInterface::class));
             }
         }
 
         // check the required method for the NavigationAttribute
         if (!\method_exists($attributeDef->getClass(), 'getName')) {
-            throw new InvalidConfigurationException(sprintf(
-                'The Attribute "%s" must implement the "getName" method. Please implement the "%s" interface in your Attribute class.',
-                $attributeDef->getClass(),
-                NavigationAttributeInterface::class
-            ));
+            throw new InvalidConfigurationException(\sprintf('The Attribute "%s" must implement the "getName" method. Please implement the "%s" interface in your Attribute class.', $attributeDef->getClass(), NavigationAttributeInterface::class));
         }
 
         // Find all services tagged with 'navigation'

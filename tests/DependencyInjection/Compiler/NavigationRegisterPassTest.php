@@ -72,7 +72,6 @@ class NavigationRegisterPassTest extends TestCase
         // if no error occurs, it's successful
     }
 
-
     public function testProcessSkipsWithoutNavigationAttribute(): void
     {
         $this->containerAddNavigationRegistry();
@@ -95,7 +94,6 @@ class NavigationRegisterPassTest extends TestCase
         $this->containerAddNavigationRegistry();
 
         $this->containerBuilder->register(FooNavigationWithoutAttribute::class, FooNavigationWithoutAttribute::class);
-
 
         $navigationRegistryDef = $this->containerBuilder->getDefinition(NavigationRegistryInterface::class);
 
@@ -144,7 +142,6 @@ class NavigationRegisterPassTest extends TestCase
         $this->pass->process($this->containerBuilder);
     }
 
-
     public function testProcess(): void
     {
         $this->containerAddNavigationAttribute();
@@ -167,24 +164,24 @@ class NavigationRegisterPassTest extends TestCase
                     [
                         'mainNavigation',
                         new Reference(FooNavigation::class),
-                        new Navigation('mainNavigation')
-                    ]
+                        new Navigation('mainNavigation'),
+                    ],
                 ],
                 [
                     'addNavigation',
                     [
                         'TemplateNavigation',
                         new Reference(FooTemplateNavigation::class),
-                        new Navigation('TemplateNavigation', '@TestTemplate/test.html.twig')
-                    ]
+                        new Navigation('TemplateNavigation', '@TestTemplate/test.html.twig'),
+                    ],
                 ],
                 [
                     'addNavigation',
                     [
                         'ActiveAsLinkNavigation',
                         new Reference(FooActiveAsLinkNavigation::class),
-                        new Navigation('ActiveAsLinkNavigation', null, true)
-                    ]
+                        new Navigation('ActiveAsLinkNavigation', null, true),
+                    ],
                 ],
             ],
             $navigationRegistryDef->getMethodCalls()
