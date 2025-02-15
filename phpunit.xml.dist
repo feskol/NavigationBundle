@@ -18,14 +18,7 @@
         </testsuite>
     </testsuites>
 
-    <coverage processUncoveredFiles="true">
-        <include>
-            <directory>./</directory>
-        </include>
-        <exclude>
-            <directory>./test</directory>
-            <directory>./vendor</directory>
-        </exclude>
+    <coverage>
         <report>
             <text output="php://stdout"/>
             <clover output="coverage.xml"/>
