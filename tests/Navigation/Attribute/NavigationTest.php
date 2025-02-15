@@ -1,4 +1,5 @@
 <?php
+
 /**
  * This file is part of the NavigationBundle project.
  *
@@ -15,7 +16,6 @@ use Feskol\Bundle\NavigationBundle\Tests\Fixtures\Navigation\Attribute\FooActive
 use Feskol\Bundle\NavigationBundle\Tests\Fixtures\Navigation\Attribute\FooNavigation;
 use Feskol\Bundle\NavigationBundle\Tests\Fixtures\Navigation\Attribute\FooTemplateNavigation;
 use PHPUnit\Framework\TestCase;
-use ReflectionClass;
 
 class NavigationTest extends TestCase
 {
@@ -25,10 +25,9 @@ class NavigationTest extends TestCase
     public function testLoadFromAttribute(
         string $className,
         string $getter,
-        mixed  $expectedReturn
-    )
-    {
-        $navigation = (new ReflectionClass($className))->getAttributes(Navigation::class)[0]->newInstance();
+        mixed $expectedReturn,
+    ): void {
+        $navigation = (new \ReflectionClass($className))->getAttributes(Navigation::class)[0]->newInstance();
 
         $this->assertEquals($expectedReturn, $navigation->$getter());
     }
