@@ -27,6 +27,28 @@ jobs:
         with:
           args: --diff --dry-run
 
+  coverage:
+    name: PHPUnit with Code Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          coverage: xdebug
+      - name: Install dependencies
+        run: composer install --no-progress --prefer-dist
+      - name: Run PHPUnit with Code Coverage
+        run: vendor/bin/phpunit --coverage-clover coverage.xml
+      - name: Upload Coverage Report
+        uses: codecov/codecov-action@v4
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: coverage.xml
+          fail_ci_if_error: true
+          verbose: true
+
   test:
     runs-on: ubuntu-latest
     strategy:
@@ -55,7 +77,6 @@ jobs:
             php: '8.3'
             dev: true
     name: PHP ${{ matrix.php }} tests (${{ matrix.description }})
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
