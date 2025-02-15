@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults public="false"/>
+
+        <service id="feskol_navigation.twig.extension" class="Feskol\Bundle\NavigationBundle\Twig\NavigationExtension">
+            <tag name="twig.extension"/>
+        </service>
+
+        <service id="feskol_navigation.twig.runtime"
+                 class="Feskol\Bundle\NavigationBundle\Twig\NavigationRuntimeExtension">
+            <tag name="twig.runtime"/>
+            <argument type="service" id="Feskol\Bundle\NavigationBundle\Navigation\NavigationRegisterInterface"/>
+            <argument type="service" id="twig"/>
+        </service>
+    </services>
+</container>

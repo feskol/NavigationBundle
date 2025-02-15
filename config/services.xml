@@ -1,0 +1,19 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <services>
+        <defaults public="false" />
+
+        <service id="feskol_navigation.attribute.navigation_attribute"
+                 class="Feskol\Bundle\NavigationBundle\Navigation\Attribute\Navigation"/>
+
+        <service id="feskol_navigation.registry" class="Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistry">
+            <argument>%feskol_navigation.template%</argument>
+            <argument>%feskol_navigation.active_as_link%</argument>
+        </service>
+
+    </services>
+</container>

@@ -11,17 +11,16 @@
 
 namespace Feskol\Bundle\NavigationBundle\Twig;
 
-use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistry;
+use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistryInterface;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
 use Twig\Error\SyntaxError;
-use Twig\Extension\RuntimeExtensionInterface;
 
-class NavigationRuntimeExtension implements RuntimeExtensionInterface
+class NavigationRuntimeExtension implements NavigationRuntimeInterface
 {
     public function __construct(
-        private readonly NavigationRegistry $navigationRegistry,
+        private readonly NavigationRegistryInterface $navigationRegistry,
         private readonly Environment $twig,
     ) {
     }

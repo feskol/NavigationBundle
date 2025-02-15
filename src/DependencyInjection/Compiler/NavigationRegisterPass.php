@@ -12,23 +12,25 @@
 namespace Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler;
 
 use Feskol\Bundle\NavigationBundle\Navigation\Attribute\Navigation;
-use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistry;
+use Feskol\Bundle\NavigationBundle\Navigation\Attribute\NavigationAttributeInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
 
-class NavigationCompilerPass implements CompilerPassInterface
+class NavigationRegisterPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->has(NavigationRegistry::class)) {
+        if (!$container->has('feskol_navigation.registry')
+            || !$container->has('feskol_navigation.attribute.navigation_attribute')) {
             return;
         }
 
-        $registryDef = $container->findDefinition(NavigationRegistry::class);
+        $registryDef = $container->findDefinition('feskol_navigation.registry');
+        $attributeDef = $container->findDefinition('feskol_navigation.attribute.navigation_attribute');
 
         // Find all services tagged with 'navigation'
-        foreach ($container->findTaggedServiceIds('feskol.navigation') as $id => $tags) {
+        foreach ($container->findTaggedServiceIds('feskol_navigation.navigation') as $id => $tags) {
             $definition = $container->getDefinition($id);
             $class = $definition->getClass();
 
@@ -37,16 +39,15 @@ class NavigationCompilerPass implements CompilerPassInterface
             }
 
             $reflection = new \ReflectionClass($class);
-            $attributes = $reflection->getAttributes(Navigation::class);
+            $attributes = $reflection->getAttributes($attributeDef->getClass());
             foreach ($attributes as $attribute) {
-                /** @var Navigation $instance */
+                /** @var NavigationAttributeInterface $instance */
                 $instance = $attribute->newInstance();
 
                 $registryDef->addMethodCall('addNavigation', [
                     $instance->getName(),
                     new Reference($id),
-                    $instance->getTemplate(),
-                    $instance->getActiveAsLink(),
+                    $instance,
                 ]);
             }
         }

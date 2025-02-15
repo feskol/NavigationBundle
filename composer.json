@@ -32,6 +32,8 @@
         }
     },
     "autoload-dev": {
-        "psr-4": { "Feskol\\Bundle\\NavigationBundle\\Tests\\": "tests/" }
+        "psr-4": {
+            "Feskol\\Bundle\\NavigationBundle\\Tests\\": "tests/"
+        }
     }
 }

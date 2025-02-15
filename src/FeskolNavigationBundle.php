@@ -11,9 +11,11 @@
 
 namespace Feskol\Bundle\NavigationBundle;
 
-use Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler\AutoTagNavigationCompilerPass;
-use Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler\NavigationCompilerPass;
+use Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler\AutoTagNavigationPass;
+use Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler\NavigationPass;
+use Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler\NavigationRegisterPass;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
+use Symfony\Component\DependencyInjection\Compiler\PassConfig;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
@@ -27,7 +29,7 @@ class FeskolNavigationBundle extends AbstractBundle
                 ->scalarNode('template')
                     ->cannotBeEmpty()
                     ->info('Replace the default template rendering the navigation list')
-                    ->defaultValue('@FeskolNavigationBundle/navigation.html.twig')
+                    ->defaultValue('@FeskolNavigation/navigation.html.twig')
                 ->end()
                 ->booleanNode('active_as_link')
                     ->info('Set true to render an active navigation item as a link tag')
@@ -39,18 +41,21 @@ class FeskolNavigationBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
-        $container->services()
-            ->get('feskol_navigation.registry')
-            ->arg(0, $config['template'])
-            ->arg(1, $config['active_as_link'])
+        $container->import('../config/services.xml');
+        $container->import('../config/twig.xml');
+
+        $container->parameters()
+            ->set('feskol_navigation.template', $config['template'])
+            ->set('feskol_navigation.active_as_link', $config['active_as_link'])
         ;
     }
 
     public function build(ContainerBuilder $container): void
     {
         $container
-            ->addCompilerPass(new AutoTagNavigationCompilerPass())
-            ->addCompilerPass(new NavigationCompilerPass())
+            ->addCompilerPass(new AutoTagNavigationPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 100)
+            ->addCompilerPass(new NavigationPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 50)
+            ->addCompilerPass(new NavigationRegisterPass())
         ;
     }
 }

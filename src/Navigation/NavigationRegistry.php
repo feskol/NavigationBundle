@@ -11,10 +11,12 @@
 
 namespace Feskol\Bundle\NavigationBundle\Navigation;
 
+use Feskol\Bundle\NavigationBundle\Navigation\Attribute\NavigationAttributeInterface;
+
 /**
  * Stores and retrieves navigation instances.
  */
-class NavigationRegistry
+class NavigationRegistry implements NavigationRegistryInterface
 {
     private array $navigations = [];
     private array $templates = [];
@@ -29,12 +31,11 @@ class NavigationRegistry
     public function addNavigation(
         string $name,
         NavigationInterface $navigation,
-        ?string $template = null,
-        bool $activeAsLink = false,
+        NavigationAttributeInterface $navigationAttribute,
     ): void {
         $this->navigations[$name] = $navigation;
-        $this->templates[$name] = $template;
-        $this->activeAsLink[$name] = $activeAsLink;
+        $this->templates[$name] = $navigationAttribute->getTemplate();
+        $this->activeAsLink[$name] = $navigationAttribute->getActiveAsLink();
     }
 
     public function getNavigation(string $name): ?NavigationInterface
