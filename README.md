@@ -1,4 +1,4 @@
-> [!NOTE]  
+> [!NOTE]
 > This project is currently WIP!
 
 # FeskolNavigationBundle
