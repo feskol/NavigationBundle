@@ -14,7 +14,7 @@
         <service id="feskol_navigation.twig.runtime"
                  class="Feskol\Bundle\NavigationBundle\Twig\NavigationRuntimeExtension">
             <tag name="twig.runtime"/>
-            <argument type="service" id="Feskol\Bundle\NavigationBundle\Navigation\NavigationRegisterInterface"/>
+            <argument type="service" id="Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistryInterface"/>
             <argument type="service" id="twig"/>
         </service>
     </services>

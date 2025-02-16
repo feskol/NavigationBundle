@@ -19,7 +19,11 @@ class NavigationExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-            new TwigFunction('feskol_navigation_render', [NavigationRuntimeExtension::class, 'renderNavigation']),
+            new TwigFunction(
+                'feskol_navigation_render',
+                [NavigationRuntimeExtension::class, 'renderNavigation'],
+                ['is_safe' => ['html']]
+            ),
         ];
     }
 }
