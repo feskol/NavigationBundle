@@ -36,7 +36,7 @@
     {%- if item.active -%}
         {% set classes = classes|merge(['active']) %}
     {%- endif -%}
-    {{- ' class="'~ classes|join(' ') ~'"' -}}
+    {%- if classes is not empty %} class="{{ classes|join(' ') }}"{% endif -%}
 {%- endblock -%}
 
 {%- block item_content -%}
@@ -62,15 +62,15 @@
 {%- endblock -%}
 
 {%- block item_tag_link_default_attributes -%}
-    {{- item.href ? ' href="'~ item.href ~'"' -}}
-    {{- item.hreflang ? ' hreflang="'~ item.hreflang ~'"' -}}
-    {{- item.target ? ' target="'~ item.target ~'"' -}}
-    {{- item.rel ? ' rel="'~ item.rel ~'"' -}}
-    {{- item.type ? ' type="'~ item.type ~'"' -}}
-    {{- item.referrerPolicy ? ' referrerpolicy="'~ item.referrerPolicy ~'"' -}}
-    {{- item.media ? ' media="'~ item.media ~'"' -}}
-    {{- item.ping ? ' ping="'~ item.ping ~'"' -}}
-    {{- item.download ? ' download' -}}
+    {%- if item.href %} href="{{ item.href }}"{% endif -%}
+    {%- if item.hreflang %} hreflang="{{ item.hreflang }}"{% endif -%}
+    {%- if item.target %} target="{{ item.target }}"{% endif -%}
+    {%- if item.rel %} rel="{{ item.rel }}"{% endif -%}
+    {%- if item.type %} type="{{ item.type }}"{% endif -%}
+    {%- if item.referrerPolicy %} referrerpolicy="{{ item.referrerPolicy }}"{% endif -%}
+    {%- if item.media %} media="{{ item.media }}"{% endif -%}
+    {%- if item.ping %} ping="{{ item.ping }}"{% endif -%}
+    {%- if item.download %} download{% endif -%}
 {%- endblock -%}
 
 {%- block item_tag_span -%}
