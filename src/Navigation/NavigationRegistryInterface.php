@@ -11,8 +11,6 @@
 
 namespace Feskol\Bundle\NavigationBundle\Navigation;
 
-use Feskol\Bundle\NavigationBundle\Navigation\Attribute\Navigation;
-
 interface NavigationRegistryInterface
 {
     /**
@@ -21,11 +19,27 @@ interface NavigationRegistryInterface
     public function addNavigation(
         string $name,
         NavigationInterface $navigation,
-        Navigation $navigationAttribute,
+        ?string $template = null,
+        ?bool $activeAsLink = null,
     ): void;
 
     /**
      * Returns the navigation by name.
+     * Returns null if not set.
      */
     public function getNavigation(string $name): ?NavigationInterface;
+
+    /**
+     * Returns the templates to render.
+     * Returns null if not set.
+     */
+    public function getTemplate(string $name): ?string;
+
+    /**
+     * Returns the ActiveAsLink boolean.
+     * Returns null if not set.
+     *
+     * Determines if the active link should be rendered as a link
+     */
+    public function getActiveAsLink(string $name): ?bool;
 }

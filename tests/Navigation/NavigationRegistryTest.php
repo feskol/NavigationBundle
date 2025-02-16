@@ -11,7 +11,6 @@
 
 namespace Feskol\Bundle\NavigationBundle\Tests\Navigation;
 
-use Feskol\Bundle\NavigationBundle\Navigation\Attribute\Navigation;
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistry;
 use Feskol\Bundle\NavigationBundle\Tests\Fixtures\Navigation\NavigationClass;
 use PHPUnit\Framework\TestCase;
@@ -26,7 +25,6 @@ class NavigationRegistryTest extends TestCase
         $navRegistry->addNavigation(
             'testNavigation',
             $navigationClass,
-            new Navigation('testNavigation')
         );
 
         $this->assertSame($navigationClass, $navRegistry->getNavigation('testNavigation'));
@@ -39,7 +37,6 @@ class NavigationRegistryTest extends TestCase
         $navRegistry->addNavigation(
             'testNavigation',
             new NavigationClass(),
-            new Navigation('testNavigation')
         );
 
         $this->assertEquals('template/test-nav.html.twig', $navRegistry->getTemplate('testNavigation'));
@@ -52,7 +49,6 @@ class NavigationRegistryTest extends TestCase
         $navRegistry->addNavigation(
             'testNavigation',
             new NavigationClass(),
-            new Navigation('testNavigation')
         );
 
         $this->assertFalse($navRegistry->getActiveAsLink('testNavigation'));
@@ -65,7 +61,7 @@ class NavigationRegistryTest extends TestCase
         $navRegistry->addNavigation(
             'testNavigation',
             new NavigationClass(),
-            new Navigation('testNavigation', 'my-custom-template/my-custom-template.html.twig')
+            'my-custom-template/my-custom-template.html.twig'
         );
 
         $this->assertEquals(
@@ -81,7 +77,8 @@ class NavigationRegistryTest extends TestCase
         $navRegistry->addNavigation(
             'testNavigation',
             new NavigationClass(),
-            new Navigation('testNavigation', null, true)
+            null,
+            true
         );
 
         $this->assertTrue($navRegistry->getActiveAsLink('testNavigation'));

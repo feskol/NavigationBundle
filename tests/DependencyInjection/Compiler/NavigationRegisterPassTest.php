@@ -12,7 +12,6 @@
 namespace Feskol\Bundle\NavigationBundle\Tests\DependencyInjection\Compiler;
 
 use Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler\NavigationRegisterPass;
-use Feskol\Bundle\NavigationBundle\Navigation\Attribute\Navigation;
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistry;
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistryInterface;
 use Feskol\Bundle\NavigationBundle\Tests\Fixtures\DependencyInjection\Compiler\FooNavigationWithoutAttribute;
@@ -120,30 +119,9 @@ class NavigationRegisterPassTest extends TestCase
 
         $this->assertEquals(
             [
-                [
-                    'addNavigation',
-                    [
-                        'mainNavigation',
-                        new Reference(FooNavigation::class),
-                        new Navigation('mainNavigation'),
-                    ],
-                ],
-                [
-                    'addNavigation',
-                    [
-                        'TemplateNavigation',
-                        new Reference(FooTemplateNavigation::class),
-                        new Navigation('TemplateNavigation', '@TestTemplate/test.html.twig'),
-                    ],
-                ],
-                [
-                    'addNavigation',
-                    [
-                        'ActiveAsLinkNavigation',
-                        new Reference(FooActiveAsLinkNavigation::class),
-                        new Navigation('ActiveAsLinkNavigation', null, true),
-                    ],
-                ],
+                ['addNavigation', ['mainNavigation', new Reference(FooNavigation::class), null, null]],
+                ['addNavigation', ['TemplateNavigation', new Reference(FooTemplateNavigation::class), '@TestTemplate/test.html.twig', null]],
+                ['addNavigation', ['ActiveAsLinkNavigation', new Reference(FooActiveAsLinkNavigation::class), null, true]],
             ],
             $navigationRegistryDef->getMethodCalls()
         );

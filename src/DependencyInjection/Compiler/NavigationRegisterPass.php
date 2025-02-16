@@ -57,7 +57,8 @@ class NavigationRegisterPass implements CompilerPassInterface
                 $registryDef->addMethodCall('addNavigation', [
                     $instance->getName(),
                     new Reference($id),
-                    $instance,
+                    $instance->getTemplate(),
+                    $instance->getActiveAsLink(),
                 ]);
             }
         }
