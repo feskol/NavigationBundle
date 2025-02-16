@@ -3,15 +3,6 @@
 [![Tests](https://github.com/feskol/NavigationBundle/actions/workflows/test.yml/badge.svg)](https://github.com/feskol/NavigationBundle/actions/workflows/test.yml)
 [![codecov](https://codecov.io/gh/feskol/NavigationBundle/graph/badge.svg?token=3210T89Z8P)](https://codecov.io/gh/feskol/NavigationBundle)
 
-
-[support-buy-me-coffee]: https://buymeacoffee.com/feskol
-
-[support-badge-buy-me-coffee]: https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?&logo=buy-me-a-coffee&logoColor=black
-
-[support-paypal-me]: https://paypal.me/feskol
-
-[support-badge-paypal-me]: https://img.shields.io/badge/PayPal_Me-003087?logo=paypal&logoColor=fff
-
 This bundle is an integration of
 the [PHP-Navigation](https://github.com/feskol/php-navigation) library for
 Symfony.
@@ -44,16 +35,17 @@ return [
 ### Configure the bundle (optional)
 
 There are a few configurations available for this bundle. To make use of it,
-start by creating a new config file: `config/packages/feskol_navigation.yaml`
+start by creating a new config file:
 
 ```yaml
 # config/packages/feskol_navigation.yaml
-feskol_navigation:
-# activate to change the default template
-#template: 'my-template.html.twig'
 
-# activate to render active links as normal link-tags instead of span-tag
-#active_as_link: true
+feskol_navigation:
+    # activate to change the default template
+    #template: 'my-template.html.twig'
+
+    # activate to render active links as normal link-tags instead of span-tag
+    #active_as_link: true
 ```
 
 Make sure you `bin/console cache:clear` after you change the config.
@@ -68,5 +60,5 @@ bundle:
 ## Compatibility
 
 The current version of this bundle has the following requirements:
-* PHP 8.1 or newer is required
-* Symfony 6.1 or newer is required
+* PHP `8.1` or newer is required
+* Symfony `6.1` or newer is required
