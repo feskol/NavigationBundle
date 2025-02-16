@@ -15,7 +15,7 @@ namespace Feskol\Bundle\NavigationBundle\Navigation\Attribute;
  * Marks navigation classes for automatic discovery.
  */
 #[\Attribute(\Attribute::TARGET_CLASS)]
-class Navigation implements NavigationAttributeInterface
+class Navigation
 {
     /**
      * @param string      $name         The unique name of the Navigation

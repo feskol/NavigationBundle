@@ -11,7 +11,7 @@
 
 namespace Feskol\Bundle\NavigationBundle\Navigation;
 
-use Feskol\Bundle\NavigationBundle\Navigation\Attribute\NavigationAttributeInterface;
+use Feskol\Bundle\NavigationBundle\Navigation\Attribute\Navigation;
 
 interface NavigationRegistryInterface
 {
@@ -21,7 +21,7 @@ interface NavigationRegistryInterface
     public function addNavigation(
         string $name,
         NavigationInterface $navigation,
-        NavigationAttributeInterface $navigationAttribute,
+        Navigation $navigationAttribute,
     ): void;
 
     /**

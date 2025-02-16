@@ -11,7 +11,7 @@
 
 namespace Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler;
 
-use Feskol\Bundle\NavigationBundle\Navigation\Attribute\NavigationAttributeInterface;
+use Feskol\Bundle\NavigationBundle\Navigation\Attribute\Navigation;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
@@ -19,20 +19,14 @@ class AutoTagNavigationPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->has(NavigationAttributeInterface::class)) {
-            return;
-        }
-
-        $navigationAttributeDef = $container->findDefinition(NavigationAttributeInterface::class);
-
         foreach ($container->getDefinitions() as $definition) {
             $class = $definition->getClass();
-            if (!$class) {
+            if (!$class || !\class_exists($class)) {
                 continue;
             }
 
             $reflection = new \ReflectionClass($class);
-            if ($reflection->getAttributes($navigationAttributeDef->getClass())) {
+            if ($reflection->getAttributes(Navigation::class)) {
                 // Auto-tag any service that has #[Navigation]
                 $definition->addTag('feskol_navigation.navigation');
             }

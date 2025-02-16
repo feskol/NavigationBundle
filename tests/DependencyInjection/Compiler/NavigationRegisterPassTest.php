@@ -13,7 +13,6 @@ namespace Feskol\Bundle\NavigationBundle\Tests\DependencyInjection\Compiler;
 
 use Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler\NavigationRegisterPass;
 use Feskol\Bundle\NavigationBundle\Navigation\Attribute\Navigation;
-use Feskol\Bundle\NavigationBundle\Navigation\Attribute\NavigationAttributeInterface;
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistry;
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistryInterface;
 use Feskol\Bundle\NavigationBundle\Tests\Fixtures\DependencyInjection\Compiler\FooNavigationWithoutAttribute;
@@ -38,11 +37,6 @@ class NavigationRegisterPassTest extends TestCase
         $this->pass = new NavigationRegisterPass();
     }
 
-    private function containerAddNavigationAttribute(): void
-    {
-        $this->containerBuilder->register(NavigationAttributeInterface::class, Navigation::class);
-    }
-
     private function containerAddNavigationRegistry(): void
     {
         $this->containerBuilder->register(NavigationRegistryInterface::class, NavigationRegistry::class)
@@ -61,7 +55,6 @@ class NavigationRegisterPassTest extends TestCase
 
     public function testProcessSkipsWithoutNavigationRegistry(): void
     {
-        $this->containerAddNavigationAttribute();
         $this->containerAddNavigationClasses();
 
         $this->assertFalse($this->containerBuilder->hasDefinition(NavigationRegistryInterface::class));
@@ -72,25 +65,8 @@ class NavigationRegisterPassTest extends TestCase
         // if no error occurs, it's successful
     }
 
-    public function testProcessSkipsWithoutNavigationAttribute(): void
-    {
-        $this->containerAddNavigationRegistry();
-        $this->containerAddNavigationClasses();
-
-        $this->assertFalse($this->containerBuilder->hasDefinition(NavigationAttributeInterface::class));
-
-        $navigationRegistryDef = $this->containerBuilder->getDefinition(NavigationRegistryInterface::class);
-
-        $this->assertFalse($navigationRegistryDef->hasMethodCall('addNavigation'));
-
-        $this->pass->process($this->containerBuilder);
-
-        $this->assertFalse($navigationRegistryDef->hasMethodCall('addNavigation'));
-    }
-
     public function testProcessSkipsWithoutNavigationClasses(): void
     {
-        $this->containerAddNavigationAttribute();
         $this->containerAddNavigationRegistry();
 
         $this->containerBuilder->register(FooNavigationWithoutAttribute::class, FooNavigationWithoutAttribute::class);
@@ -107,7 +83,6 @@ class NavigationRegisterPassTest extends TestCase
 
     public function testInvalidConfigurationForNavigationRegistryAddNavigation(): void
     {
-        $this->containerAddNavigationAttribute();
         $this->containerAddNavigationClasses();
 
         $this->containerBuilder->register(NavigationRegistryInterface::class, NavigationRegistryWithoutAddNavigation::class);
@@ -119,7 +94,6 @@ class NavigationRegisterPassTest extends TestCase
 
     public function testInvalidConfigurationForNavigationRegistryGetNavigation(): void
     {
-        $this->containerAddNavigationAttribute();
         $this->containerAddNavigationRegistry();
         $this->containerAddNavigationClasses();
 
@@ -130,21 +104,8 @@ class NavigationRegisterPassTest extends TestCase
         $this->pass->process($this->containerBuilder);
     }
 
-    public function testInvalidConfigurationForNavigationAttributeGetName(): void
-    {
-        $this->containerAddNavigationRegistry();
-        $this->containerAddNavigationClasses();
-
-        $this->containerBuilder->register(NavigationAttributeInterface::class, \stdClass::class);
-
-        $this->expectException(InvalidConfigurationException::class);
-
-        $this->pass->process($this->containerBuilder);
-    }
-
     public function testProcess(): void
     {
-        $this->containerAddNavigationAttribute();
         $this->containerAddNavigationRegistry();
         $this->containerAddNavigationClasses();
 

@@ -12,8 +12,6 @@
 namespace Feskol\Bundle\NavigationBundle\Tests\DependencyInjection\Compiler;
 
 use Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler\AutoTagNavigationPass;
-use Feskol\Bundle\NavigationBundle\Navigation\Attribute\Navigation;
-use Feskol\Bundle\NavigationBundle\Navigation\Attribute\NavigationAttributeInterface;
 use Feskol\Bundle\NavigationBundle\Tests\Fixtures\Navigation\Attribute\FooNavigation;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -26,7 +24,6 @@ class AutoTagNavigationPassTest extends TestCase
     protected function setUp(): void
     {
         $this->containerBuilder = new ContainerBuilder();
-        $this->containerBuilder->register(NavigationAttributeInterface::class, Navigation::class);
 
         $this->pass = new AutoTagNavigationPass();
     }
@@ -40,19 +37,6 @@ class AutoTagNavigationPassTest extends TestCase
         $this->pass->process($this->containerBuilder);
 
         $this->assertTrue($fooNav->hasTag('feskol_navigation.navigation'));
-    }
-
-    public function testProcessSkipsWithoutNavigationAttribute(): void
-    {
-        $this->containerBuilder->register(FooNavigation::class, FooNavigation::class);
-        $this->containerBuilder->removeDefinition(NavigationAttributeInterface::class);
-
-        $fooNav = $this->containerBuilder->getDefinition(FooNavigation::class);
-        $this->assertFalse($fooNav->hasTag('feskol_navigation.navigation'));
-
-        $this->pass->process($this->containerBuilder);
-
-        $this->assertFalse($fooNav->hasTag('feskol_navigation.navigation'));
     }
 
     public function testProcessContinuesWhenDefinitionDoesNotHaveClass(): void

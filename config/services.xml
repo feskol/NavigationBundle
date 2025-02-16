@@ -7,8 +7,8 @@
     <services>
         <defaults public="false" />
 
-        <service id="feskol_navigation.attribute.navigation_attribute"
-                 class="Feskol\Bundle\NavigationBundle\Navigation\Attribute\Navigation"/>
+        <service id="Feskol\Bundle\NavigationBundle\Navigation\NavigationRegisterInterface"
+                 class="Feskol\Bundle\NavigationBundle\Navigation\NavigationRegisterInterface" />
 
         <service id="feskol_navigation.registry" class="Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistry">
             <argument>%feskol_navigation.template%</argument>

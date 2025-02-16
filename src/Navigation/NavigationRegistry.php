@@ -11,7 +11,7 @@
 
 namespace Feskol\Bundle\NavigationBundle\Navigation;
 
-use Feskol\Bundle\NavigationBundle\Navigation\Attribute\NavigationAttributeInterface;
+use Feskol\Bundle\NavigationBundle\Navigation\Attribute\Navigation;
 
 /**
  * Stores and retrieves navigation instances.
@@ -31,7 +31,7 @@ class NavigationRegistry implements NavigationRegistryInterface
     public function addNavigation(
         string $name,
         NavigationInterface $navigation,
-        NavigationAttributeInterface $navigationAttribute,
+        Navigation $navigationAttribute,
     ): void {
         $this->navigations[$name] = $navigation;
         $this->templates[$name] = $navigationAttribute->getTemplate();

@@ -12,7 +12,6 @@
 namespace Feskol\Bundle\NavigationBundle\Tests\DependencyInjection\Compiler;
 
 use Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler\NavigationPass;
-use Feskol\Bundle\NavigationBundle\Navigation\Attribute\NavigationAttributeInterface;
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistryInterface;
 use Feskol\Bundle\NavigationBundle\Twig\NavigationRuntimeInterface;
 use PHPUnit\Framework\TestCase;
@@ -31,14 +30,11 @@ class NavigationPassTest extends TestCase
 
     public function testProcess(): void
     {
-        $this->assertFalse($this->containerBuilder->has(NavigationAttributeInterface::class));
         $this->assertFalse($this->containerBuilder->has(NavigationRegistryInterface::class));
         $this->assertFalse($this->containerBuilder->has(NavigationRuntimeInterface::class));
 
         $this->pass->process($this->containerBuilder);
 
-        $this->assertTrue($this->containerBuilder->has(NavigationAttributeInterface::class));
-        $this->assertSame('feskol_navigation.attribute.navigation_attribute', (string) $this->containerBuilder->getAlias(NavigationAttributeInterface::class));
         $this->assertTrue($this->containerBuilder->has(NavigationRegistryInterface::class));
         $this->assertSame('feskol_navigation.registry', (string) $this->containerBuilder->getAlias(NavigationRegistryInterface::class));
         $this->assertTrue($this->containerBuilder->has(NavigationRuntimeInterface::class));
@@ -47,17 +43,14 @@ class NavigationPassTest extends TestCase
 
     public function testProcessWithAlreadyDefinedServices(): void
     {
-        $this->containerBuilder->register(NavigationAttributeInterface::class, \stdClass::class);
         $this->containerBuilder->register(NavigationRegistryInterface::class, \stdClass::class);
         $this->containerBuilder->register(NavigationRuntimeInterface::class, \stdClass::class);
 
-        $this->assertTrue($this->containerBuilder->has(NavigationAttributeInterface::class));
         $this->assertTrue($this->containerBuilder->has(NavigationRegistryInterface::class));
         $this->assertTrue($this->containerBuilder->has(NavigationRuntimeInterface::class));
 
         $this->pass->process($this->containerBuilder);
 
-        $this->assertFalse($this->containerBuilder->hasAlias(NavigationAttributeInterface::class));
         $this->assertFalse($this->containerBuilder->hasAlias(NavigationRegistryInterface::class));
         $this->assertFalse($this->containerBuilder->hasAlias(NavigationRuntimeInterface::class));
     }

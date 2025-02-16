@@ -11,7 +11,6 @@
 
 namespace Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler;
 
-use Feskol\Bundle\NavigationBundle\Navigation\Attribute\NavigationAttributeInterface;
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistryInterface;
 use Feskol\Bundle\NavigationBundle\Twig\NavigationRuntimeInterface;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -21,13 +20,6 @@ class NavigationPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->has(NavigationAttributeInterface::class)) {
-            $container->setAlias(
-                NavigationAttributeInterface::class,
-                'feskol_navigation.attribute.navigation_attribute'
-            );
-        }
-
         if (!$container->has(NavigationRegistryInterface::class)) {
             $container->setAlias(NavigationRegistryInterface::class, 'feskol_navigation.registry');
         }
