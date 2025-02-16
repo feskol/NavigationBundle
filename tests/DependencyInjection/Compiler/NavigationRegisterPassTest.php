@@ -39,7 +39,7 @@ class NavigationRegisterPassTest extends TestCase
     private function containerAddNavigationRegistry(): void
     {
         $this->containerBuilder->register(NavigationRegistryInterface::class, NavigationRegistry::class)
-            ->setArguments(['templates/navigation.html.twig', false]);
+            ->setArguments(['templates/_navigation.html.twig', false]);
     }
 
     private function containerAddNavigationClasses(): void
