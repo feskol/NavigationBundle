@@ -21,7 +21,8 @@ class NavigationPass implements CompilerPassInterface
     public function process(ContainerBuilder $container): void
     {
         if (!$container->has(NavigationRegistryInterface::class)) {
-            $container->setAlias(NavigationRegistryInterface::class, 'feskol_navigation.registry');
+            $container->setAlias(NavigationRegistryInterface::class, 'feskol_navigation.registry')
+                ->setPublic(true);
         }
 
         if (!$container->has(NavigationRuntimeInterface::class)) {
