@@ -60,7 +60,7 @@ class FeskolNavigationBundle extends AbstractBundle
             ->get('feskol_navigation.registry')
             ->args([
                 $config['template'],
-                $config['active_as_link']
+                $config['active_as_link'],
             ])
         ;
     }
