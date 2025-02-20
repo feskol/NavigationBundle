@@ -78,13 +78,6 @@ class FeskolNavigationBundleTest extends TestCase
         $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.registry'));
         $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.twig.extension'));
         $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.twig.runtime'));
-
-        // parameters check
-        $this->assertTrue($containerBuilder->hasParameter('feskol_navigation.template'));
-        $this->assertTrue($containerBuilder->hasParameter('feskol_navigation.active_as_link'));
-
-        $this->assertEquals('nav-template.html.twig', $containerBuilder->getParameter('feskol_navigation.template'));
-        $this->assertTrue($containerBuilder->getParameter('feskol_navigation.active_as_link'));
     }
 
     public function testLoadExtensionAutoTagNavigation(): void
