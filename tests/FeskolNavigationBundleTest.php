@@ -58,18 +58,21 @@ class FeskolNavigationBundleTest extends TestCase
         );
     }
 
+    private function getConfig(): array
+    {
+        return [
+            'template' => 'nav-template.html.twig',
+            'active_as_link' => true,
+        ];
+    }
+
     public function testLoadExtension(): void
     {
         $bundle = new FeskolNavigationBundle();
         $containerBuilder = new ContainerBuilder();
         $containerConfigurator = $this->getContainerConfigurator($containerBuilder, $bundle);
 
-        $config = [
-            'template' => 'custom_template.html.twig',
-            'active_as_link' => true,
-        ];
-
-        $bundle->loadExtension($config, $containerConfigurator, $containerBuilder);
+        $bundle->loadExtension($this->getConfig(), $containerConfigurator, $containerBuilder);
 
         // config files loaded check
         $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.registry'));
@@ -80,7 +83,7 @@ class FeskolNavigationBundleTest extends TestCase
         $this->assertTrue($containerBuilder->hasParameter('feskol_navigation.template'));
         $this->assertTrue($containerBuilder->hasParameter('feskol_navigation.active_as_link'));
 
-        $this->assertEquals('custom_template.html.twig', $containerBuilder->getParameter('feskol_navigation.template'));
+        $this->assertEquals('nav-template.html.twig', $containerBuilder->getParameter('feskol_navigation.template'));
         $this->assertTrue($containerBuilder->getParameter('feskol_navigation.active_as_link'));
     }
 
@@ -90,7 +93,7 @@ class FeskolNavigationBundleTest extends TestCase
         $containerBuilder = new ContainerBuilder();
         $containerConfigurator = $this->getContainerConfigurator($containerBuilder, $bundle);
 
-        $bundle->loadExtension([], $containerConfigurator, $containerBuilder);
+        $bundle->loadExtension($this->getConfig(), $containerConfigurator, $containerBuilder);
 
         $containerBuilder->register(FooNavigation::class, FooNavigation::class)
             ->setAutoconfigured(true)
@@ -116,7 +119,7 @@ class FeskolNavigationBundleTest extends TestCase
 
         $this->assertFalse($containerBuilder->has(NavigationRegistryInterface::class));
 
-        $bundle->loadExtension([], $containerConfigurator, $containerBuilder);
+        $bundle->loadExtension($this->getConfig(), $containerConfigurator, $containerBuilder);
 
         $this->assertTrue($containerBuilder->has(NavigationRegistryInterface::class));
         $this->assertSame('feskol_navigation.registry', (string) $containerBuilder->getAlias(NavigationRegistryInterface::class));
@@ -131,7 +134,7 @@ class FeskolNavigationBundleTest extends TestCase
         $containerBuilder->register(NavigationRegistryInterface::class, \stdClass::class);
         $this->assertTrue($containerBuilder->has(NavigationRegistryInterface::class));
 
-        $bundle->loadExtension([], $containerConfigurator, $containerBuilder);
+        $bundle->loadExtension($this->getConfig(), $containerConfigurator, $containerBuilder);
 
         $this->assertFalse($containerBuilder->hasAlias(NavigationRegistryInterface::class));
     }

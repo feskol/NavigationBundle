@@ -79,7 +79,7 @@ jobs:
         if: matrix.dev
         run: composer config minimum-stability dev
       - run: composer update --no-interaction --no-progress --ansi ${{ matrix.composer_option }}
-      - run: vendor/bin/phpunit
+      - run: vendor/bin/phpunit --display-warnings
 
   coverage:
     name: PHPUnit with Code Coverage
@@ -94,7 +94,7 @@ jobs:
       - name: Install dependencies
         run: composer install --no-progress --prefer-dist
       - name: Run PHPUnit with Code Coverage
-        run: vendor/bin/phpunit --coverage-clover coverage.xml
+        run: vendor/bin/phpunit --display-warnings --coverage-clover coverage.xml
       - name: Upload Coverage Report
         uses: codecov/codecov-action@v4
         with:
