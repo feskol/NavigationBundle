@@ -11,11 +11,11 @@
 
 namespace Feskol\Bundle\NavigationBundle;
 
-use Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler\AutoTagNavigationPass;
-use Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler\NavigationPass;
 use Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler\NavigationRegisterPass;
+use Feskol\Bundle\NavigationBundle\Navigation\Attribute\Navigation;
+use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistryInterface;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
-use Symfony\Component\DependencyInjection\Compiler\PassConfig;
+use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
@@ -41,6 +41,18 @@ class FeskolNavigationBundle extends AbstractBundle
 
     public function loadExtension(array $config, ContainerConfigurator $container, ContainerBuilder $builder): void
     {
+        $builder->registerAttributeForAutoconfiguration(
+            Navigation::class,
+            static function (ChildDefinition $definition, Navigation $attribute): void {
+                $definition->addTag('feskol_navigation.navigation');
+            }
+        );
+
+        if (!$builder->has(NavigationRegistryInterface::class)) {
+            $builder->setAlias(NavigationRegistryInterface::class, 'feskol_navigation.registry')
+                ->setPublic(true);
+        }
+
         $container->import('../config/services.php');
         $container->import('../config/twig.php');
 
@@ -52,10 +64,6 @@ class FeskolNavigationBundle extends AbstractBundle
 
     public function build(ContainerBuilder $container): void
     {
-        $container
-            ->addCompilerPass(new NavigationPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 100)
-            ->addCompilerPass(new AutoTagNavigationPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 50)
-            ->addCompilerPass(new NavigationRegisterPass())
-        ;
+        $container->addCompilerPass(new NavigationRegisterPass());
     }
 }

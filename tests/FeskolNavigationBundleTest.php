@@ -11,10 +11,10 @@
 
 namespace Feskol\Bundle\NavigationBundle\Tests;
 
-use Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler\AutoTagNavigationPass;
-use Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler\NavigationPass;
 use Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler\NavigationRegisterPass;
 use Feskol\Bundle\NavigationBundle\FeskolNavigationBundle;
+use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistryInterface;
+use Feskol\Bundle\NavigationBundle\Tests\Fixtures\Navigation\Attribute\FooNavigation;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
@@ -22,6 +22,7 @@ use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
+use Symfony\Component\HttpKernel\Bundle\Bundle;
 
 class FeskolNavigationBundleTest extends TestCase
 {
@@ -44,18 +45,24 @@ class FeskolNavigationBundleTest extends TestCase
         $this->assertArrayHasKey('active_as_link', $rootNode->getChildNodeDefinitions());
     }
 
-    public function testLoadExtension(): void
+    private function getContainerConfigurator(ContainerBuilder $containerBuilder, Bundle $bundle): ContainerConfigurator
     {
-        $bundle = new FeskolNavigationBundle();
-        $containerBuilder = new ContainerBuilder();
         $instancesOf = [];
-        $containerConfigurator = new ContainerConfigurator(
+
+        return new ContainerConfigurator(
             $containerBuilder,
             new PhpFileLoader($containerBuilder, new FileLocator($bundle->getPath().'/config')),
             $instancesOf,
             __DIR__,
             'test.yaml'
         );
+    }
+
+    public function testLoadExtension(): void
+    {
+        $bundle = new FeskolNavigationBundle();
+        $containerBuilder = new ContainerBuilder();
+        $containerConfigurator = $this->getContainerConfigurator($containerBuilder, $bundle);
 
         $config = [
             'template' => 'custom_template.html.twig',
@@ -77,6 +84,58 @@ class FeskolNavigationBundleTest extends TestCase
         $this->assertTrue($containerBuilder->getParameter('feskol_navigation.active_as_link'));
     }
 
+    public function testLoadExtensionAutoTagNavigation(): void
+    {
+        $bundle = new FeskolNavigationBundle();
+        $containerBuilder = new ContainerBuilder();
+        $containerConfigurator = $this->getContainerConfigurator($containerBuilder, $bundle);
+
+        $bundle->loadExtension([], $containerConfigurator, $containerBuilder);
+
+        $containerBuilder->register(FooNavigation::class, FooNavigation::class)
+            ->setAutoconfigured(true)
+            ->setPublic(true);
+
+        $this->assertNotEmpty($containerBuilder->getDefinition(FooNavigation::class));
+        $fooNav = $containerBuilder->getDefinition(FooNavigation::class);
+        $this->assertFalse($fooNav->hasTag('feskol_navigation.navigation'));
+
+        $containerBuilder->compile();
+
+        $this->assertNotEmpty($containerBuilder->getDefinition(FooNavigation::class));
+
+        $fooNav = $containerBuilder->getDefinition(FooNavigation::class);
+        $this->assertTrue($fooNav->hasTag('feskol_navigation.navigation'));
+    }
+
+    public function testLoadExtensionNavigationRegistry(): void
+    {
+        $bundle = new FeskolNavigationBundle();
+        $containerBuilder = new ContainerBuilder();
+        $containerConfigurator = $this->getContainerConfigurator($containerBuilder, $bundle);
+
+        $this->assertFalse($containerBuilder->has(NavigationRegistryInterface::class));
+
+        $bundle->loadExtension([], $containerConfigurator, $containerBuilder);
+
+        $this->assertTrue($containerBuilder->has(NavigationRegistryInterface::class));
+        $this->assertSame('feskol_navigation.registry', (string) $containerBuilder->getAlias(NavigationRegistryInterface::class));
+    }
+
+    public function testLoadExtensionNavigationRegistryWithAlreadyDefinedServices(): void
+    {
+        $bundle = new FeskolNavigationBundle();
+        $containerBuilder = new ContainerBuilder();
+        $containerConfigurator = $this->getContainerConfigurator($containerBuilder, $bundle);
+
+        $containerBuilder->register(NavigationRegistryInterface::class, \stdClass::class);
+        $this->assertTrue($containerBuilder->has(NavigationRegistryInterface::class));
+
+        $bundle->loadExtension([], $containerConfigurator, $containerBuilder);
+
+        $this->assertFalse($containerBuilder->hasAlias(NavigationRegistryInterface::class));
+    }
+
     public function testBuildRegistersCompilerPasses(): void
     {
         $bundle = new FeskolNavigationBundle();
@@ -85,8 +144,6 @@ class FeskolNavigationBundleTest extends TestCase
         $bundle->build($containerBuilder);
         $passes = $containerBuilder->getCompilerPassConfig()->getPasses();
 
-        $this->assertTrue($this->hasCompilerPass($passes, NavigationPass::class));
-        $this->assertTrue($this->hasCompilerPass($passes, AutoTagNavigationPass::class));
         $this->assertTrue($this->hasCompilerPass($passes, NavigationRegisterPass::class));
     }
 
