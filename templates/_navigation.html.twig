@@ -1,0 +1,83 @@
+{% extends '@FeskolNavigation/_navigation_base.html.twig' %}
+
+{# @var \Feskol\Navigation\Contracts\LinkInterface item #}
+
+{%- block root -%}
+    {{- block('navigation') -}}
+{%- endblock -%}
+
+{%- block navigation -%}
+    <ul>
+        {{- block('children') -}}
+    </ul>
+{%- endblock -%}
+
+{%- block sub_navigation -%}
+    {{- block('navigation') -}}
+{%- endblock -%}
+
+{%- block children -%}
+    {%- for item in items -%}
+        {{- block('item') -}}
+    {%- endfor -%}
+{%- endblock -%}
+
+{%- block item -%}
+    <li {{- block('item_attributes') -}}>
+        {{- block('item_content') -}}
+    </li>
+{%- endblock -%}
+
+{%- block item_attributes -%}
+    {%- set classes = [] %}
+    {%- if item.activeChildren -%}
+        {% set classes = classes|merge(['active-children']) %}
+    {%- endif -%}
+    {%- if item.active -%}
+        {% set classes = classes|merge(['active']) %}
+    {%- endif -%}
+    {%- if classes is not empty %} class="{{ classes|join(' ') }}"{% endif -%}
+{%- endblock -%}
+
+{%- block item_content -%}
+    {{- block('item_tag') -}}
+    {%- if item.hasChildren() -%}
+        {% set items = item.children %}
+        {{- block('sub_navigation') -}}
+    {%- endif -%}
+{%- endblock -%}
+
+{%- block item_tag -%}
+    {%- if item.href is not empty and (not item.active or options.activeAsLink) -%}
+        {{- block('item_tag_link') -}}
+    {%- else -%}
+        {{- block('item_tag_span') -}}
+    {%- endif -%}
+{%- endblock -%}
+
+{%- block item_tag_link -%}
+    <a {{- block('item_tag_link_default_attributes') -}}>
+        {{- block('label') -}}
+    </a>
+{%- endblock -%}
+
+{%- block item_tag_link_default_attributes -%}
+    {%- if item.href %} href="{{ item.href }}"{% endif -%}
+    {%- if item.hreflang %} hreflang="{{ item.hreflang }}"{% endif -%}
+    {%- if item.target %} target="{{ item.target }}"{% endif -%}
+    {%- if item.rel %} rel="{{ item.rel }}"{% endif -%}
+    {%- if item.type %} type="{{ item.type }}"{% endif -%}
+    {%- if item.referrerPolicy %} referrerpolicy="{{ item.referrerPolicy }}"{% endif -%}
+    {%- if item.media %} media="{{ item.media }}"{% endif -%}
+    {%- if item.ping %} ping="{{ item.ping }}"{% endif -%}
+    {%- if item.download %} download{% endif -%}
+{%- endblock -%}
+
+{%- block item_tag_span -%}
+    <span>{{ block('label') }}</span>
+{%- endblock -%}
+
+{%- block label -%}
+    {{ item.title|trans }}
+{%- endblock -%}
+

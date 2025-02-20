@@ -1,0 +1,32 @@
+{# @var \Feskol\Navigation\Contracts\LinkInterface item #}
+
+{%- block root -%}
+    {%- block navigation -%}
+        <ul>
+            {%- block children -%}
+                {%- for item in items -%}
+                    {%- block item -%}
+                        <li {%- block item_attributes -%}{% endblock %}>
+
+                            {%- block item_content -%}
+
+                                {%- block item_tag -%}
+                                    {%- block item_tag_link -%}
+                                        <a {%- block item_tag_link_default_attributes -%}{% endblock %}></a>
+                                    {%- endblock -%}
+
+                                    {%- block item_tag_span -%}{%- endblock -%}
+
+                                    {%- block label -%}{% endblock %}
+                                {%- endblock -%}
+
+                                {%- block sub_navigation -%}{%- endblock -%}
+                            {%- endblock -%}
+
+                        </li>
+                    {%- endblock -%}
+                {%- endfor -%}
+            {%- endblock -%}
+        </ul>
+    {%- endblock -%}
+{%- endblock -%}
