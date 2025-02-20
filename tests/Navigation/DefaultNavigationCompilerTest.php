@@ -22,7 +22,7 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
 
 /**
- * Test class for navigation
+ * Test class for navigation.
  */
 final class CompilerNavigation extends AbstractNavigation
 {
@@ -52,7 +52,7 @@ final class UrlGenerator implements UrlGeneratorInterface
         'app_third_sub_sub_route' => '/app/third/sub_sub_route',
     ];
 
-    public function setContext(RequestContext $context)
+    public function setContext(RequestContext $context): void
     {
     }
 
@@ -67,14 +67,12 @@ final class UrlGenerator implements UrlGeneratorInterface
     }
 }
 
-
 class DefaultNavigationCompilerTest extends TestCase
 {
     private function getLinkService(
         string $currentRoute = 'app_first_route',
-        array  $currentRouteParams = [],
-    ): LinkService
-    {
+        array $currentRouteParams = [],
+    ): LinkService {
         $requestStack = new RequestStack();
         $requestStack->push(new Request([], [], [
             '_route' => $currentRoute,

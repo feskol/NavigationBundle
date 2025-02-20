@@ -19,9 +19,6 @@ class Link extends \Feskol\Navigation\Link implements LinkInterface
     private array $routeParameters = [];
     private int $urlReferenceType = UrlGeneratorInterface::ABSOLUTE_PATH;
 
-    /**
-     * @inheritDoc
-     */
     public function getRoute(): ?string
     {
         return $this->route;
@@ -34,9 +31,6 @@ class Link extends \Feskol\Navigation\Link implements LinkInterface
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getRouteParameters(): array
     {
         return $this->routeParameters;
@@ -49,9 +43,6 @@ class Link extends \Feskol\Navigation\Link implements LinkInterface
         return $this;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getUrlReferenceType(): int
     {
         return $this->urlReferenceType;

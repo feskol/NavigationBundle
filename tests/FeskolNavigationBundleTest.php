@@ -112,8 +112,7 @@ class FeskolNavigationBundleTest extends TestCase
     public function testLoadExtensionInterfaceRegistration(
         string $interfaceClass,
         string $expectedAliasId,
-    ): void
-    {
+    ): void {
         $bundle = new FeskolNavigationBundle();
         $containerBuilder = new ContainerBuilder();
         $containerConfigurator = $this->getContainerConfigurator($containerBuilder, $bundle);

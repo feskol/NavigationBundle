@@ -81,10 +81,9 @@ class LinkServiceTest extends TestCase
 
     private function getLinkService(
         string $currentRoute = 'index',
-        array  $currentRouteParams = [],
-        string $urlGenerateResult = '/index'
-    ): LinkService
-    {
+        array $currentRouteParams = [],
+        string $urlGenerateResult = '/index',
+    ): LinkService {
         $requestStack = new RequestStack();
         $requestStack->push(new Request([], [], [
             '_route' => $currentRoute,

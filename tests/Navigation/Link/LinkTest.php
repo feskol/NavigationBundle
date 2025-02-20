@@ -20,7 +20,7 @@ class LinkTest extends TestCase
     /**
      * @dataProvider getTestData
      */
-    public function testSetters(string $setter, mixed $value, string $getter, mixed $expected)
+    public function testSetters(string $setter, mixed $value, string $getter, mixed $expected): void
     {
         $link = new Link();
 

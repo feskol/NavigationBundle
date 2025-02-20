@@ -18,8 +18,7 @@ class DefaultNavigationCompiler implements NavigationCompilerInterface
 {
     public function __construct(
         private readonly LinkService $linkService,
-    )
-    {
+    ) {
     }
 
     public function process(NavigationInterface $navigation): void
@@ -36,7 +35,7 @@ class DefaultNavigationCompiler implements NavigationCompilerInterface
 
         if ($link->hasChildren()) {
             foreach ($link->getChildren() as $child) {
-                /** @var LinkInterface $child */
+                /* @var LinkInterface $child */
                 $this->processItem($child);
             }
         }

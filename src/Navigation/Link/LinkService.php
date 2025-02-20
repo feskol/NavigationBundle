@@ -20,10 +20,9 @@ class LinkService
     private const ATTRIBUTE_ROUTE_PARAMS = '_route_params';
 
     public function __construct(
-        private readonly RequestStack          $requestStack,
+        private readonly RequestStack $requestStack,
         private readonly UrlGeneratorInterface $urlGenerator,
-    )
-    {
+    ) {
     }
 
     private function getCurrentRoute(): ?string
@@ -37,7 +36,7 @@ class LinkService
     }
 
     /**
-     * Checks if the Link is active
+     * Checks if the Link is active.
      */
     public function isLinkActive(LinkInterface $link): bool
     {
@@ -49,15 +48,14 @@ class LinkService
         $currentRouteParams = $this->getCurrentRouteParams();
         $linkRouteParams = $link->getRouteParameters();
 
-        ksort($linkRouteParams);
-        ksort($currentRouteParams);
+        \ksort($linkRouteParams);
+        \ksort($currentRouteParams);
 
         return $this->getCurrentRoute() === $link->getRoute() && $currentRouteParams === $linkRouteParams;
     }
 
-
     /**
-     * Returns the url for the Link
+     * Returns the url for the Link.
      */
     public function generateUrl(LinkInterface $link): string
     {

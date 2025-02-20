@@ -15,9 +15,6 @@ interface NavigationCompilerInterface
 {
     /**
      * You can modify the navigation here before it is return in twig.
-     *
-     * @param NavigationInterface $navigation
-     * @return void
      */
     public function process(NavigationInterface $navigation): void;
 }

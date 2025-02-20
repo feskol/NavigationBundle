@@ -14,17 +14,17 @@ namespace Feskol\Bundle\NavigationBundle\Navigation\Link;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * Represents a navigation link for Symfony applications
+ * Represents a navigation link for Symfony applications.
  */
 interface LinkInterface extends \Feskol\Navigation\Contracts\LinkInterface
 {
     /**
-     * The route name, e.g. "app_login"
+     * The route name, e.g. "app_login".
      */
     public function getRoute(): ?string;
 
     /**
-     * The parameters for the route
+     * The parameters for the route.
      */
     public function getRouteParameters(): array;
 

@@ -11,7 +11,6 @@
 
 namespace Feskol\Bundle\NavigationBundle\Navigation;
 
-
 use Feskol\Bundle\NavigationBundle\Navigation\Link\LinkInterface;
 
 /**
