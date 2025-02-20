@@ -29,7 +29,7 @@ class FeskolNavigationBundle extends AbstractBundle
                 ->scalarNode('template')
                     ->cannotBeEmpty()
                     ->info('Replace the default template rendering the navigation list')
-                    ->defaultValue('_navigation.html.twig')
+                    ->defaultValue('@FeskolNavigation/_navigation.html.twig')
                 ->end()
                 ->booleanNode('active_as_link')
                     ->info('Set true to render an active navigation item as a link tag')
@@ -56,9 +56,12 @@ class FeskolNavigationBundle extends AbstractBundle
         $container->import('../config/services.php');
         $container->import('../config/twig.php');
 
-        $container->parameters()
-            ->set('feskol_navigation.template', $config['template'])
-            ->set('feskol_navigation.active_as_link', $config['active_as_link'])
+        $container->services()
+            ->get('feskol_navigation.registry')
+            ->args([
+                $config['template'],
+                $config['active_as_link']
+            ])
         ;
     }
 

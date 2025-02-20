@@ -8,8 +8,8 @@ return static function (ContainerConfigurator $container): void {
     $container->services()
         ->set('feskol_navigation.registry', NavigationRegistry::class)
         ->args([
-            param('%feskol_navigation.template%'),
-            param('%feskol_navigation.active_as_link%'),
+            abstract_arg('.feskol_navigation.template'),
+            abstract_arg('.feskol_navigation.active_as_link'),
         ])
     ;
 };
