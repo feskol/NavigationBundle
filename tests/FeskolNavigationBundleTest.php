@@ -15,6 +15,7 @@ use Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler\NavigationRegist
 use Feskol\Bundle\NavigationBundle\FeskolNavigationBundle;
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistryInterface;
 use Feskol\Bundle\NavigationBundle\Tests\Fixtures\Navigation\Attribute\FooNavigation;
+use Feskol\Bundle\NavigationBundle\Tests\Fixtures\TestNavigationCompiler;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
@@ -76,6 +77,7 @@ class FeskolNavigationBundleTest extends TestCase
 
         // config files loaded check
         $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.registry'));
+        $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.link_service'));
         $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.twig.extension'));
         $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.twig.runtime'));
     }
@@ -104,32 +106,50 @@ class FeskolNavigationBundleTest extends TestCase
         $this->assertTrue($fooNav->hasTag('feskol_navigation.navigation'));
     }
 
-    public function testLoadExtensionNavigationRegistry(): void
+    /**
+     * @dataProvider getInterfaceRegistrationTests
+     */
+    public function testLoadExtensionInterfaceRegistration(
+        string $interfaceClass,
+        string $expectedAliasId,
+    ): void
     {
         $bundle = new FeskolNavigationBundle();
         $containerBuilder = new ContainerBuilder();
         $containerConfigurator = $this->getContainerConfigurator($containerBuilder, $bundle);
 
-        $this->assertFalse($containerBuilder->has(NavigationRegistryInterface::class));
+        $this->assertFalse($containerBuilder->has($interfaceClass));
 
         $bundle->loadExtension($this->getConfig(), $containerConfigurator, $containerBuilder);
 
-        $this->assertTrue($containerBuilder->has(NavigationRegistryInterface::class));
-        $this->assertSame('feskol_navigation.registry', (string) $containerBuilder->getAlias(NavigationRegistryInterface::class));
+        $this->assertTrue($containerBuilder->has($interfaceClass));
+        $this->assertSame($expectedAliasId, (string) $containerBuilder->getAlias($interfaceClass));
     }
 
-    public function testLoadExtensionNavigationRegistryWithAlreadyDefinedServices(): void
+    public static function getInterfaceRegistrationTests(): array
+    {
+        return [
+            [NavigationRegistryInterface::class, 'feskol_navigation.registry'],
+        ];
+    }
+
+    public function testLoadExtensionAutoConfigureNavigationCompilers(): void
     {
         $bundle = new FeskolNavigationBundle();
         $containerBuilder = new ContainerBuilder();
         $containerConfigurator = $this->getContainerConfigurator($containerBuilder, $bundle);
 
-        $containerBuilder->register(NavigationRegistryInterface::class, \stdClass::class);
-        $this->assertTrue($containerBuilder->has(NavigationRegistryInterface::class));
+        $containerBuilder->register(TestNavigationCompiler::class, TestNavigationCompiler::class)
+            ->setAutoconfigured(true)
+            ->setPublic(true);
+
+        $this->assertFalse($containerBuilder->getDefinition(TestNavigationCompiler::class)->hasTag('feskol_navigation.navigation_compiler'));
 
         $bundle->loadExtension($this->getConfig(), $containerConfigurator, $containerBuilder);
 
-        $this->assertFalse($containerBuilder->hasAlias(NavigationRegistryInterface::class));
+        $containerBuilder->compile();
+
+        $this->assertTrue($containerBuilder->getDefinition(TestNavigationCompiler::class)->hasTag('feskol_navigation.navigation_compiler'));
     }
 
     public function testBuildRegistersCompilerPasses(): void

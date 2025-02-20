@@ -13,7 +13,7 @@ namespace Feskol\Bundle\NavigationBundle;
 
 use Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler\NavigationRegisterPass;
 use Feskol\Bundle\NavigationBundle\Navigation\Attribute\Navigation;
-use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistryInterface;
+use Feskol\Bundle\NavigationBundle\Navigation\NavigationCompilerInterface;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
 use Symfony\Component\DependencyInjection\ChildDefinition;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -48,10 +48,8 @@ class FeskolNavigationBundle extends AbstractBundle
             }
         );
 
-        if (!$builder->has(NavigationRegistryInterface::class)) {
-            $builder->setAlias(NavigationRegistryInterface::class, 'feskol_navigation.registry')
-                ->setPublic(true);
-        }
+        $builder->registerForAutoconfiguration(NavigationCompilerInterface::class)
+            ->addTag('feskol_navigation.navigation_compiler');
 
         $container->import('../config/services.php');
         $container->import('../config/twig.php');

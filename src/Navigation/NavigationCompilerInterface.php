@@ -11,18 +11,13 @@
 
 namespace Feskol\Bundle\NavigationBundle\Navigation;
 
-
-use Feskol\Bundle\NavigationBundle\Navigation\Link\LinkInterface;
-
-/**
- * Defines the contract for all navigations.
- */
-interface NavigationInterface
+interface NavigationCompilerInterface
 {
     /**
-     * Returns the links from the Navigation.
+     * You can modify the navigation here before it is return in twig.
      *
-     * @return LinkInterface[]
+     * @param NavigationInterface $navigation
+     * @return void
      */
-    public function getItems(): array;
+    public function process(NavigationInterface $navigation): void;
 }

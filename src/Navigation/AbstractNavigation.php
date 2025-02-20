@@ -11,18 +11,12 @@
 
 namespace Feskol\Bundle\NavigationBundle\Navigation;
 
+use Feskol\Navigation\Navigation;
 
-use Feskol\Bundle\NavigationBundle\Navigation\Link\LinkInterface;
-
-/**
- * Defines the contract for all navigations.
- */
-interface NavigationInterface
+abstract class AbstractNavigation extends Navigation implements NavigationInterface
 {
-    /**
-     * Returns the links from the Navigation.
-     *
-     * @return LinkInterface[]
-     */
-    public function getItems(): array;
+    public function getItems(): array
+    {
+        return $this->getLinks();
+    }
 }
