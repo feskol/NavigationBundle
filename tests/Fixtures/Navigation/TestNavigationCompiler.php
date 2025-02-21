@@ -9,7 +9,7 @@
  * to the LICENSE file distributed with this source code.
  */
 
-namespace Feskol\Bundle\NavigationBundle\Tests\Fixtures;
+namespace Feskol\Bundle\NavigationBundle\Tests\Fixtures\Navigation;
 
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationCompilerInterface;
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationInterface;
