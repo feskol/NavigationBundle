@@ -15,7 +15,7 @@ use Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler\NavigationRegist
 use Feskol\Bundle\NavigationBundle\FeskolNavigationBundle;
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistryInterface;
 use Feskol\Bundle\NavigationBundle\Tests\Fixtures\Navigation\Attribute\FooNavigation;
-use Feskol\Bundle\NavigationBundle\Tests\Fixtures\TestNavigationCompiler;
+use Feskol\Bundle\NavigationBundle\Tests\Fixtures\Navigation\TestNavigationCompiler;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
@@ -79,6 +79,8 @@ class FeskolNavigationBundleTest extends TestCase
         $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.navigation_registry'));
 
         $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.link_service'));
+        $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.navigation_compiler.default'));
+
         $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.twig.extension'));
         $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.twig.runtime'));
     }

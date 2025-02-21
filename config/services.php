@@ -2,6 +2,7 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Feskol\Bundle\NavigationBundle\Navigation\DefaultNavigationCompiler;
 use Feskol\Bundle\NavigationBundle\Navigation\Link\LinkService;
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistry;
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistryInterface;
@@ -21,5 +22,11 @@ return static function (ContainerConfigurator $container): void {
             service('request_stack'),
             service(UrlGeneratorInterface::class),
         ])
+
+        ->set('feskol_navigation.navigation_compiler.default', DefaultNavigationCompiler::class)
+        ->args([
+            service('feskol_navigation.link_service'),
+        ])
+        ->tag('feskol_navigation.navigation_compiler')
     ;
 };
