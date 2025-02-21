@@ -76,7 +76,8 @@ class FeskolNavigationBundleTest extends TestCase
         $bundle->loadExtension($this->getConfig(), $containerConfigurator, $containerBuilder);
 
         // config files loaded check
-        $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.registry'));
+        $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.navigation_registry'));
+
         $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.link_service'));
         $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.twig.extension'));
         $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.twig.runtime'));
@@ -128,7 +129,7 @@ class FeskolNavigationBundleTest extends TestCase
     public static function getInterfaceRegistrationTests(): array
     {
         return [
-            [NavigationRegistryInterface::class, 'feskol_navigation.registry'],
+            [NavigationRegistryInterface::class, 'feskol_navigation.navigation_registry'],
         ];
     }
 

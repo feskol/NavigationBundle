@@ -55,7 +55,7 @@ class FeskolNavigationBundle extends AbstractBundle
         $container->import('../config/twig.php');
 
         $container->services()
-            ->get('feskol_navigation.registry')
+            ->get('feskol_navigation.navigation_registry')
             ->args([
                 $config['template'],
                 $config['active_as_link'],
