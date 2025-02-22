@@ -56,7 +56,7 @@ That's it. Now when you call the
 custom template.
 
 > [!NOTE]
-> The default template can be changed through the config.
+> The default template can be changed through the [config](config.md).
 
 ## ActiveAsLink
 
@@ -74,4 +74,4 @@ class FooNavigation extends NavigationInterface
 }
 ````
 > [!NOTE]
-> Note: The default ActiveAsLink behavior can be changed through the config.
+> Note: The default ActiveAsLink behavior can be changed through the [config](config.md).
