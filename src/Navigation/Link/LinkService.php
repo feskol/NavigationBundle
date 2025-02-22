@@ -12,6 +12,9 @@
 namespace Feskol\Bundle\NavigationBundle\Navigation\Link;
 
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\Exception\InvalidParameterException;
+use Symfony\Component\Routing\Exception\MissingMandatoryParametersException;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class LinkService
@@ -40,7 +43,7 @@ class LinkService
      */
     public function isLinkActive(LinkInterface $link): bool
     {
-        // if route is not set, return the current active status
+        // if the route is not set, return the current active status
         if (null === $link->getRoute()) {
             return $link->isActive();
         }
@@ -56,10 +59,14 @@ class LinkService
 
     /**
      * Returns the url for the Link.
+     *
+     * @throws RouteNotFoundException
+     * @throws MissingMandatoryParametersException
+     * @throws InvalidParameterException
      */
     public function generateUrl(LinkInterface $link): string
     {
-        // if route is not set, return the href
+        // if the route is not set, return the href
         if (null === $link->getRoute()) {
             return $link->getHref();
         }

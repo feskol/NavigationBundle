@@ -12,16 +12,36 @@
 namespace Feskol\Bundle\NavigationBundle\Navigation;
 
 use Feskol\Bundle\NavigationBundle\Navigation\Link\LinkInterface;
+use Feskol\Navigation\Contracts\LinkInterface as FesKolPhpNavigationLinkInterface;
 
 /**
  * Defines the contract for all navigations.
  */
-interface NavigationInterface
+interface NavigationInterface extends \Feskol\Navigation\Contracts\NavigationInterface
 {
     /**
-     * Returns the links from the Navigation.
+     * @param LinkInterface $link
      *
+     * @return $this
+     */
+    public function addLink(FesKolPhpNavigationLinkInterface $link): static;
+
+    /**
      * @return LinkInterface[]
      */
-    public function getItems(): array;
+    public function getLinks(): array;
+
+    /**
+     * @param LinkInterface[] $links
+     *
+     * @return $this
+     */
+    public function setLinks(array $links): static;
+
+    /**
+     * @param LinkInterface $link
+     *
+     * @return $this
+     */
+    public function removeLink(FesKolPhpNavigationLinkInterface $link): static;
 }

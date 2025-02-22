@@ -9,10 +9,10 @@
  * to the LICENSE file distributed with this source code.
  */
 
-namespace Feskol\Bundle\NavigationBundle\Navigation;
+namespace Feskol\Bundle\NavigationBundle\Tests\Fixtures\Navigation\Processor;
 
-use Feskol\Navigation\Navigation;
+use Feskol\Bundle\NavigationBundle\Navigation\AbstractNavigation;
 
-abstract class AbstractNavigation extends Navigation implements NavigationInterface
+class ProcessorNavigation extends AbstractNavigation
 {
 }

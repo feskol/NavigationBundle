@@ -16,6 +16,7 @@ return static function (ContainerConfigurator $container): void {
         ->args([
             service(NavigationRegistryInterface::class),
             service('twig'),
+            service('feskol_navigation.navigation_processor_runner')
         ])
     ;
 };

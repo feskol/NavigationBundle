@@ -15,7 +15,7 @@ use Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler\NavigationRegist
 use Feskol\Bundle\NavigationBundle\FeskolNavigationBundle;
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistryInterface;
 use Feskol\Bundle\NavigationBundle\Tests\Fixtures\Navigation\Attribute\FooNavigation;
-use Feskol\Bundle\NavigationBundle\Tests\Fixtures\Navigation\TestNavigationCompiler;
+use Feskol\Bundle\NavigationBundle\Tests\Fixtures\Navigation\Processor\TestNavigationProcessor;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Configurator\DefinitionConfigurator;
@@ -79,7 +79,8 @@ class FeskolNavigationBundleTest extends TestCase
         $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.navigation_registry'));
 
         $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.link_service'));
-        $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.navigation_compiler.default'));
+        $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.navigation_processor_runner'));
+        $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.navigation_processor.default'));
 
         $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.twig.extension'));
         $this->assertTrue($containerBuilder->hasDefinition('feskol_navigation.twig.runtime'));
@@ -135,23 +136,56 @@ class FeskolNavigationBundleTest extends TestCase
         ];
     }
 
-    public function testLoadExtensionAutoConfigureNavigationCompilers(): void
+    public function testLoadExtensionAutoConfigureNavigationProcessors(): void
     {
         $bundle = new FeskolNavigationBundle();
         $containerBuilder = new ContainerBuilder();
         $containerConfigurator = $this->getContainerConfigurator($containerBuilder, $bundle);
 
-        $containerBuilder->register(TestNavigationCompiler::class, TestNavigationCompiler::class)
+        $containerBuilder->register(TestNavigationProcessor::class, TestNavigationProcessor::class)
             ->setAutoconfigured(true)
             ->setPublic(true);
 
-        $this->assertFalse($containerBuilder->getDefinition(TestNavigationCompiler::class)->hasTag('feskol_navigation.navigation_compiler'));
+        $this->assertFalse($containerBuilder->getDefinition(TestNavigationProcessor::class)->hasTag('feskol_navigation.navigation_processor'));
 
         $bundle->loadExtension($this->getConfig(), $containerConfigurator, $containerBuilder);
 
         $containerBuilder->compile();
 
-        $this->assertTrue($containerBuilder->getDefinition(TestNavigationCompiler::class)->hasTag('feskol_navigation.navigation_compiler'));
+        $this->assertTrue($containerBuilder->getDefinition(TestNavigationProcessor::class)->hasTag('feskol_navigation.navigation_processor'));
+
+        $tag = $containerBuilder->getDefinition(TestNavigationProcessor::class)->getTag('feskol_navigation.navigation_processor');
+
+        $this->assertNotEmpty($tag);
+        $this->assertArrayHasKey('priority', $tag[0]);
+    }
+
+    public function testLoadExtensionAutoConfigureNavigationProcessorsAlreadyDefined(): void
+    {
+        $bundle = new FeskolNavigationBundle();
+        $containerBuilder = new ContainerBuilder();
+        $containerConfigurator = $this->getContainerConfigurator($containerBuilder, $bundle);
+
+        $containerBuilder->register(TestNavigationProcessor::class, TestNavigationProcessor::class)
+            ->setAutoconfigured(true)
+            ->setPublic(true)
+        ->addTag('feskol_navigation.navigation_processor', ['priority' => 80]);
+
+        $this->assertTrue($containerBuilder->getDefinition(TestNavigationProcessor::class)->hasTag('feskol_navigation.navigation_processor'));
+        $tag = $containerBuilder->getDefinition(TestNavigationProcessor::class)->getTag('feskol_navigation.navigation_processor');
+        $this->assertNotEmpty($tag);
+        $this->assertArrayHasKey('priority', $tag[0]);
+        $this->assertEquals(80, $tag[0]['priority']);
+
+        $bundle->loadExtension($this->getConfig(), $containerConfigurator, $containerBuilder);
+
+        $containerBuilder->compile();
+
+        $this->assertTrue($containerBuilder->getDefinition(TestNavigationProcessor::class)->hasTag('feskol_navigation.navigation_processor'));
+        $tag = $containerBuilder->getDefinition(TestNavigationProcessor::class)->getTag('feskol_navigation.navigation_processor');
+        $this->assertNotEmpty($tag);
+        $this->assertArrayHasKey('priority', $tag[0]);
+        $this->assertEquals(80, $tag[0]['priority']);
     }
 
     public function testBuildRegistersCompilerPasses(): void

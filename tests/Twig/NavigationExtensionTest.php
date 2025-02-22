@@ -12,6 +12,7 @@
 namespace Feskol\Bundle\NavigationBundle\Tests\Twig;
 
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistry;
+use Feskol\Bundle\NavigationBundle\Navigation\Processor\NavigationProcessorRunner;
 use Feskol\Bundle\NavigationBundle\Tests\Fixtures\Twig\FooNavigation;
 use Feskol\Bundle\NavigationBundle\Twig\NavigationExtension;
 use Feskol\Bundle\NavigationBundle\Twig\NavigationRuntimeExtension;
@@ -49,7 +50,11 @@ class NavigationExtensionTest extends TestCase
         );
 
         return new FactoryRuntimeLoader([
-            NavigationRuntimeExtension::class => fn () => new NavigationRuntimeExtension($navigationRegistry, $twig),
+            NavigationRuntimeExtension::class => fn () => new NavigationRuntimeExtension(
+                $navigationRegistry,
+                $twig,
+                new NavigationProcessorRunner()
+            ),
         ]);
     }
 }

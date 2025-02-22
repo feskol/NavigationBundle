@@ -9,12 +9,12 @@
  * to the LICENSE file distributed with this source code.
  */
 
-namespace Feskol\Bundle\NavigationBundle\Tests\Navigation;
+namespace Feskol\Bundle\NavigationBundle\Tests\Navigation\Processor;
 
 use Feskol\Bundle\NavigationBundle\Navigation\AbstractNavigation;
-use Feskol\Bundle\NavigationBundle\Navigation\DefaultNavigationCompiler;
 use Feskol\Bundle\NavigationBundle\Navigation\Link\Link;
 use Feskol\Bundle\NavigationBundle\Navigation\Link\LinkService;
+use Feskol\Bundle\NavigationBundle\Navigation\Processor\DefaultNavigationProcessor;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -89,10 +89,10 @@ class DefaultNavigationCompilerTest extends TestCase
     {
         $navigation = new CompilerNavigation();
 
-        $defaultCompiler = new DefaultNavigationCompiler($this->getLinkService('app_third_sub_route'));
+        $defaultCompiler = new DefaultNavigationProcessor($this->getLinkService('app_third_sub_route'));
 
         // pre asserts
-        $links = $navigation->getItems();
+        $links = $navigation->getLinks();
 
         $link1 = $links[0];
         $link2 = $links[1];

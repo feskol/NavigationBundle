@@ -13,6 +13,7 @@ namespace Feskol\Bundle\NavigationBundle\Tests\Twig;
 
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistry;
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistryInterface;
+use Feskol\Bundle\NavigationBundle\Navigation\Processor\NavigationProcessorRunner;
 use Feskol\Bundle\NavigationBundle\Tests\Fixtures\Twig\FooNavigation;
 use Feskol\Bundle\NavigationBundle\Twig\NavigationRuntimeExtension;
 use PHPUnit\Framework\TestCase;
@@ -38,10 +39,7 @@ class NavigationRuntimeExtensionTest extends TestCase
 
     public function testRenderNavigation(): void
     {
-        $runtime = new NavigationRuntimeExtension(
-            $this->navigationRegistry,
-            $this->getTwigEnvironment()
-        );
+        $runtime = $this->getNavigationRuntimeExtension($this->getTwigEnvironment());
 
         $result = $runtime->renderNavigation('fooNavigation');
 
@@ -50,10 +48,7 @@ class NavigationRuntimeExtensionTest extends TestCase
 
     public function testRenderNotExistingNavigation(): void
     {
-        $runtime = new NavigationRuntimeExtension(
-            $this->navigationRegistry,
-            $this->getTwigEnvironment()
-        );
+        $runtime = $this->getNavigationRuntimeExtension($this->getTwigEnvironment());
 
         $this->expectException(\RuntimeException::class);
         $this->expectExceptionMessage('The navigation with name "notExistingNavigation" does not exist.');
@@ -69,10 +64,10 @@ class NavigationRuntimeExtensionTest extends TestCase
             'override-nav.html.twig'
         );
 
-        $runtime = new NavigationRuntimeExtension(
-            $this->navigationRegistry,
-            $this->getTwigEnvironment('override-nav.html.twig', 'Override template loaded!')
-        );
+        $runtime = $this->getNavigationRuntimeExtension($this->getTwigEnvironment(
+            'override-nav.html.twig',
+            'Override template loaded!'
+        ));
 
         $result = $runtime->renderNavigation('overrideTemplateNavigation');
 
@@ -81,13 +76,10 @@ class NavigationRuntimeExtensionTest extends TestCase
 
     public function testContextAvailable(): void
     {
-        $runtime = new NavigationRuntimeExtension(
-            $this->navigationRegistry,
-            $this->getTwigEnvironment(
-                self::DEFAULT_TEMPLATE,
-                'Items: {{ items|length }} available. activeAsLink: {{ options.activeAsLink ? "true" : "false" }}'
-            )
-        );
+        $runtime = $this->getNavigationRuntimeExtension($this->getTwigEnvironment(
+            self::DEFAULT_TEMPLATE,
+            'Items: {{ items|length }} available. activeAsLink: {{ options.activeAsLink ? "true" : "false" }}'
+        ));
 
         $result = $runtime->renderNavigation('fooNavigation');
 
@@ -103,13 +95,10 @@ class NavigationRuntimeExtensionTest extends TestCase
             true
         );
 
-        $runtime = new NavigationRuntimeExtension(
-            $this->navigationRegistry,
-            $this->getTwigEnvironment(
-                self::DEFAULT_TEMPLATE,
-                'activeAsLink: {{ options.activeAsLink ? "true" : "false" }}'
-            )
-        );
+        $runtime = $this->getNavigationRuntimeExtension($this->getTwigEnvironment(
+            self::DEFAULT_TEMPLATE,
+            'activeAsLink: {{ options.activeAsLink ? "true" : "false" }}'
+        ));
 
         $result = $runtime->renderNavigation('overrideActiveAsLinkNavigation');
 
@@ -118,13 +107,10 @@ class NavigationRuntimeExtensionTest extends TestCase
 
     public function testAdditionalContext(): void
     {
-        $runtime = new NavigationRuntimeExtension(
-            $this->navigationRegistry,
-            $this->getTwigEnvironment(
-                self::DEFAULT_TEMPLATE,
-                'testBool: {{ testBool ? "true" : "false" }}; testArray: {{ testArray.first }}, {{ testArray.second }}'
-            )
-        );
+        $runtime = $this->getNavigationRuntimeExtension($this->getTwigEnvironment(
+            self::DEFAULT_TEMPLATE,
+            'testBool: {{ testBool ? "true" : "false" }}; testArray: {{ testArray.first }}, {{ testArray.second }}'
+        ));
 
         $result = $runtime->renderNavigation('fooNavigation', [
             'testBool' => true,
@@ -147,5 +133,14 @@ class NavigationRuntimeExtensionTest extends TestCase
         return new Environment(new ArrayLoader(\array_merge($defaultTemplates, [
             $templateName => $templateContent,
         ])));
+    }
+
+    private function getNavigationRuntimeExtension(Environment $twigEnvironment): NavigationRuntimeExtension
+    {
+        return new NavigationRuntimeExtension(
+            $this->navigationRegistry,
+            $twigEnvironment,
+            new NavigationProcessorRunner()
+        );
     }
 }

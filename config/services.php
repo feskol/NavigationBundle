@@ -2,10 +2,11 @@
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Feskol\Bundle\NavigationBundle\Navigation\DefaultNavigationCompiler;
 use Feskol\Bundle\NavigationBundle\Navigation\Link\LinkService;
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistry;
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistryInterface;
+use Feskol\Bundle\NavigationBundle\Navigation\Processor\DefaultNavigationProcessor;
+use Feskol\Bundle\NavigationBundle\Navigation\Processor\NavigationProcessorRunner;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 return static function (ContainerConfigurator $container): void {
@@ -23,10 +24,15 @@ return static function (ContainerConfigurator $container): void {
             service(UrlGeneratorInterface::class),
         ])
 
-        ->set('feskol_navigation.navigation_compiler.default', DefaultNavigationCompiler::class)
+        ->set('feskol_navigation.navigation_processor_runner', NavigationProcessorRunner::class)
+        ->args([
+            tagged_iterator('feskol_navigation.navigation_processor'),
+        ])
+
+        ->set('feskol_navigation.navigation_processor.default', DefaultNavigationProcessor::class)
         ->args([
             service('feskol_navigation.link_service'),
         ])
-        ->tag('feskol_navigation.navigation_compiler')
+        ->tag('feskol_navigation.navigation_processor', ['priority' => 0]);
     ;
 };
