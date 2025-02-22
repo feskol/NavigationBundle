@@ -52,8 +52,8 @@ class NavigationExtensionTest extends TestCase
         return new FactoryRuntimeLoader([
             NavigationRuntimeExtension::class => fn () => new NavigationRuntimeExtension(
                 $navigationRegistry,
-                $twig,
-                new NavigationProcessorRunner()
+                new NavigationProcessorRunner(),
+                $twig
             ),
         ]);
     }

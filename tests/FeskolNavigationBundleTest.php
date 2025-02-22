@@ -13,7 +13,7 @@ namespace Feskol\Bundle\NavigationBundle\Tests;
 
 use Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler\NavigationRegisterPass;
 use Feskol\Bundle\NavigationBundle\FeskolNavigationBundle;
-use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistryInterface;
+use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistry;
 use Feskol\Bundle\NavigationBundle\Tests\Fixtures\Navigation\Attribute\FooNavigation;
 use Feskol\Bundle\NavigationBundle\Tests\Fixtures\Navigation\Processor\TestNavigationProcessor;
 use PHPUnit\Framework\TestCase;
@@ -111,7 +111,7 @@ class FeskolNavigationBundleTest extends TestCase
     }
 
     /**
-     * @dataProvider getInterfaceRegistrationTests
+     * @dataProvider getClassRegistrationTests
      */
     public function testLoadExtensionInterfaceRegistration(
         string $interfaceClass,
@@ -129,10 +129,10 @@ class FeskolNavigationBundleTest extends TestCase
         $this->assertSame($expectedAliasId, (string) $containerBuilder->getAlias($interfaceClass));
     }
 
-    public static function getInterfaceRegistrationTests(): array
+    public static function getClassRegistrationTests(): array
     {
         return [
-            [NavigationRegistryInterface::class, 'feskol_navigation.navigation_registry'],
+            [NavigationRegistry::class, 'feskol_navigation.navigation_registry'],
         ];
     }
 

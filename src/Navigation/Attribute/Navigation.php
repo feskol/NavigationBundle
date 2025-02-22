@@ -14,7 +14,7 @@ namespace Feskol\Bundle\NavigationBundle\Navigation\Attribute;
 /**
  * Marks navigation classes for automatic discovery.
  */
-#[\Attribute(\Attribute::TARGET_CLASS)]
+#[\Attribute(\Attribute::TARGET_CLASS | \Attribute::IS_REPEATABLE)]
 class Navigation
 {
     /**

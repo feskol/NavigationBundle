@@ -30,6 +30,25 @@ class NavigationRegistryTest extends TestCase
         $this->assertSame($navigationClass, $navRegistry->getNavigation('testNavigation'));
     }
 
+    public function testAlreadyRegisteredNavigation(): void
+    {
+        $navigationClass = new NavigationClass();
+        $navRegistry = new NavigationRegistry('template/test-nav.html.twig', false);
+
+        $navRegistry->addNavigation(
+            'testNavigation',
+            $navigationClass,
+        );
+
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('A navigation with name "testNavigation" already exists.');
+
+        $navRegistry->addNavigation(
+            'testNavigation',
+            $navigationClass,
+        );
+    }
+
     public function testReturnDefaultTemplate(): void
     {
         $navRegistry = new NavigationRegistry('template/test-nav.html.twig', false);

@@ -12,8 +12,7 @@
 namespace Feskol\Bundle\NavigationBundle\DependencyInjection\Compiler;
 
 use Feskol\Bundle\NavigationBundle\Navigation\Attribute\Navigation;
-use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistryInterface;
-use Symfony\Component\Config\Definition\Exception\InvalidConfigurationException;
+use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistry;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -22,23 +21,12 @@ class NavigationRegisterPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container): void
     {
-        if (!$container->has(NavigationRegistryInterface::class)) {
-            return;
-        }
-
         $taggedServiceIds = $container->findTaggedServiceIds('feskol_navigation.navigation');
         if (0 === \count($taggedServiceIds)) {
             return;
         }
 
-        $registryDef = $container->findDefinition(NavigationRegistryInterface::class);
-
-        // check the required methods of the NavigationRegistryInterface
-        foreach (['addNavigation', 'getNavigation'] as $method) {
-            if (!\method_exists($registryDef->getClass(), $method)) {
-                throw new InvalidConfigurationException(\sprintf('The NavigationRegistry service "%s" must implement the "%s" method. Please implement the "%s" interface in your service class.', $registryDef->getClass(), $method, NavigationRegistryInterface::class));
-            }
-        }
+        $registryDef = $container->findDefinition(NavigationRegistry::class);
 
         // Find all services tagged with 'navigation'
         foreach ($taggedServiceIds as $id => $tags) {

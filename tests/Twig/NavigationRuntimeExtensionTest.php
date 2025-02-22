@@ -12,7 +12,6 @@
 namespace Feskol\Bundle\NavigationBundle\Tests\Twig;
 
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistry;
-use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistryInterface;
 use Feskol\Bundle\NavigationBundle\Navigation\Processor\NavigationProcessorRunner;
 use Feskol\Bundle\NavigationBundle\Tests\Fixtures\Twig\FooNavigation;
 use Feskol\Bundle\NavigationBundle\Twig\NavigationRuntimeExtension;
@@ -23,7 +22,7 @@ use Twig\Loader\ArrayLoader;
 class NavigationRuntimeExtensionTest extends TestCase
 {
     private const DEFAULT_TEMPLATE = 'test-nav.html.twig';
-    private NavigationRegistryInterface $navigationRegistry;
+    private NavigationRegistry $navigationRegistry;
 
     protected function setUp(): void
     {
@@ -121,8 +120,8 @@ class NavigationRuntimeExtensionTest extends TestCase
     {
         return new NavigationRuntimeExtension(
             $this->navigationRegistry,
+            new NavigationProcessorRunner(),
             $twigEnvironment,
-            new NavigationProcessorRunner()
         );
     }
 }
