@@ -10,15 +10,16 @@
 To create your navigation class, there are two requirements:
 
 - Use the `#[Navigation]`-Attribute. You can configure your navigation with it.
-- You need to provide a `getItems()` method. You can implement the
-  `Feskol\Bundle\NavigationBundle\Navigation\NavigationInterface`
+- You need to provide a `getLinks()` method,
+  which returns an array reference of `Feskol\Bundle\NavigationBundle\Navigation\Link\LinkInterface` as its elements.
+  You can extend the `Feskol\Bundle\NavigationBundle\Navigation\AbstractNavigation`
 
 Your navigation classes are normal symfony services.
 
 Because of the `#[Navigation]`-Attribute, your class gets tagged with
 `feskol_navigation.navigation` and registered automatically.
 
-This is the most basic creation of a navigation class:
+This is an implementation of a navigation class:
 
 ```php
 // src/Navigation/HeaderNavigation.php
@@ -26,100 +27,57 @@ This is the most basic creation of a navigation class:
 namespace App\Navigation;
 
 use Feskol\Bundle\NavigationBundle\Navigation\Attribute\Navigation;
-use Feskol\Bundle\NavigationBundle\Navigation\NavigationInterface;
-use Feskol\Navigation\Contracts\LinkInterface;
-use Feskol\Navigation\Link;
-
-#[Navigation('fooNavigation')]
-class FooNavigation extends NavigationInterface
-{
-    public function getItems(): array
-    {
-        return [
-            (new Link())->setTitle('About Us')->setHref('/about-us'),
-            (new Link())->setTitle('Contact')->setHref('/contact'),
-            (new Link())->setTitle('Login')->setHref('/login'),
-        ];
-    }
-}
-```
-
-Here is a more realistic class:
-
-```php
-// src/Navigation/HeaderNavigation.php
-
-namespace App\Navigation;
-
-use Feskol\Bundle\NavigationBundle\Navigation\Attribute\Navigation;
-use Feskol\Bundle\NavigationBundle\Navigation\NavigationInterface;
-use Feskol\Navigation\Contracts\LinkInterface;
-use Feskol\Navigation\Link;
+use Feskol\Bundle\NavigationBundle\Navigation\AbstractNavigation;
+use Feskol\Bundle\NavigationBundle\Navigation\Link\Link;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 #[Navigation('headerNavigation')]
-class HeaderNavigation extends NavigationInterface
+class HeaderNavigation extends AbstractNavigation
 {
-    public function __construct(
-        private Security              $security,
-        private RequestStack          $requestStack,
-        private UrlGeneratorInterface $urlGenerator,
-    )
+    public function __construct(private Security $security)
     {
+        $this->createNavigation();
     }
 
-    private function createHref(string $route, array $params = []) {
-        return $this->urlGenerator->generate($route, $params);
-    }
-
-    private function isActive(string $route, array $params = []) {
-        $currentRoute = $this->requestStack->getCurrentRequest()?->attributes->get('_route');
-        $currentParams = $this->requestStack->getMainRequest()?->attributes->get('_route_params');
-
-        return $currentRoute === $route && $currentParams === $params;
-    }
-
-    public function getItems(): array
+    private function createNavigation(): void
     {
-        $navigationItems = [];
-
         if ($this->security->isGranted('ROLE_USER')) {
-             $dashboardLink = (new Link())
-                ->setTitle('Dashboard')
-                ->setHref($this->createHref('app_dashboard'))
-                ->setIsActive($this->isActive('app_dashboard'));
 
-            $navigationItems[] = $dashboardLink;
+            // create a Link
+            $dashboardLink = (new Link())
+                ->setTitle('Dashboard')
+                ->setRoute('app_dashboard');
+
+            // add the Link
+            $this->addLink($dashboardLink);
         }
 
+        // create a Link with children links
         $companyLink = (new Link())
                 ->setTitle('Company')
-                ->setHref($this->createHref('app_company'))
-                ->setIsActive($this->isActive('app_company'))
+                ->setRoute('app_company')
                 ->addChild(
                     (new Link())
                         ->setTitle('Company A')
-                        ->setHref($this->createHref('app_company_sub', ['company' => 1]))
-                        ->setIsActive($this->isActive('app_company_sub',  ['company' => 1]))
+                        ->setRoute('app_company_sub')
+                        ->setRouteParameters(['company' => 1])
                 )
                 ->addChild(
                     (new Link())
                         ->setTitle('Company B')
-                        ->setHref($this->createHref('app_company_sub', ['company' => 2]))
-                        ->setIsActive($this->isActive('app_company_sub',  ['company' => 2]))
+                        ->setRoute('app_company_sub')
+                        ->setRouteParameters(['company' => 2])
                 );
-        $navigationItems[] = $companyLink;
 
-        return $navigationItems;
+        // add the link
+        $this->addLink($companyLink);
     }
 }
 ```
 
 ### 2. Render in template
 
-To render the navigation there is a Twig-Function for it:
+To render the navigation, there is a Twig-Function for it:
 `feskol_navigation_render()`.
 Call the twig function in your template and add the `name` you defined in
 the `#[Navigation('headerNavigation')]`-Attribute:
@@ -128,7 +86,7 @@ the `#[Navigation('headerNavigation')]`-Attribute:
 {{ feskol_navigation_render('headerNavigation') }}
 ```
 
-The output will be like this (we assume `Company B` is our active route, and we're logged in):
+The output will be like this (assuming `Company B` is our active route, and we're logged in with `ROLE_USER`):
 
 ```html
 <ul>
@@ -142,3 +100,5 @@ The output will be like this (we assume `Company B` is our active route, and we'
     </li>
 </ul>
 ```
+
+For more detail refer to [Twig functions](twig-functions.md).
