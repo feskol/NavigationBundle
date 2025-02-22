@@ -64,7 +64,7 @@ class LinkService
      * @throws MissingMandatoryParametersException
      * @throws InvalidParameterException
      */
-    public function generateUrl(LinkInterface $link): string
+    public function generateUrl(LinkInterface $link): ?string
     {
         // if the route is not set, return the href
         if (null === $link->getRoute()) {
