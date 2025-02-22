@@ -9,11 +9,11 @@ create a new file called `feskol_navigation.yaml`
 # config/packages/feskol_navigation.yaml
 
 feskol_navigation:
-# activate to change the default template
-#template: 'my-template.html.twig'
-
-# activate to render active links as normal link-tags instead of span-tag
-#active_as_link: true
+    # activate to change the default template
+    #template: 'my-template.html.twig'
+    
+    # activate to render active links as normal link-tags instead of span-tag
+    #active_as_link: true
 ```
 
 ## Config explained
