@@ -12,6 +12,7 @@
 namespace Feskol\Bundle\NavigationBundle\Twig;
 
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationRegistryInterface;
+use Feskol\Bundle\NavigationBundle\Navigation\Processor\NavigationProcessorRunner;
 use Twig\Environment;
 use Twig\Error\LoaderError;
 use Twig\Error\RuntimeError;
@@ -23,6 +24,7 @@ class NavigationRuntimeExtension implements RuntimeExtensionInterface
     public function __construct(
         private readonly NavigationRegistryInterface $navigationRegistry,
         private readonly Environment $twig,
+        private readonly NavigationProcessorRunner $navigationProcessorRunner,
     ) {
     }
 
@@ -38,10 +40,13 @@ class NavigationRuntimeExtension implements RuntimeExtensionInterface
             throw new \RuntimeException(\sprintf('The navigation with name "%s" does not exist.', $name));
         }
 
+        $this->navigationProcessorRunner->process($navigation);
+
         $template = $this->navigationRegistry->getTemplate($name);
 
         $context = \array_merge($parameters, [
-            'items' => $navigation->getItems(),
+            'navigationTitle' => $navigation->getTitle(),
+            'items' => $navigation->getLinks(),
             'options' => [
                 'activeAsLink' => $this->navigationRegistry->getActiveAsLink($name),
             ],

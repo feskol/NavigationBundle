@@ -11,12 +11,13 @@
 
 namespace Feskol\Bundle\NavigationBundle\Tests\Fixtures\Twig;
 
+use Feskol\Bundle\NavigationBundle\Navigation\AbstractNavigation;
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationInterface;
 use Feskol\Navigation\Link;
 
-class FooNavigation implements NavigationInterface
+class FooNavigation extends AbstractNavigation implements NavigationInterface
 {
-    public function getItems(): array
+    public function getLinks(): array
     {
         return [
             new Link(),

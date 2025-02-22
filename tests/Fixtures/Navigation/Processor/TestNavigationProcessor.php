@@ -9,15 +9,14 @@
  * to the LICENSE file distributed with this source code.
  */
 
-namespace Feskol\Bundle\NavigationBundle\Tests\Fixtures\DependencyInjection\Compiler;
+namespace Feskol\Bundle\NavigationBundle\Tests\Fixtures\Navigation\Processor;
 
-use Feskol\Bundle\NavigationBundle\Navigation\AbstractNavigation;
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationInterface;
+use Feskol\Bundle\NavigationBundle\Navigation\Processor\NavigationProcessorInterface;
 
-class FooNavigationWithoutAttribute extends AbstractNavigation implements NavigationInterface
+class TestNavigationProcessor implements NavigationProcessorInterface
 {
-    public function getLinks(): array
+    public function process(NavigationInterface $navigation): void
     {
-        return [];
     }
 }

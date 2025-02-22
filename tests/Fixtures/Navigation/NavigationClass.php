@@ -11,14 +11,15 @@
 
 namespace Feskol\Bundle\NavigationBundle\Tests\Fixtures\Navigation;
 
+use Feskol\Bundle\NavigationBundle\Navigation\AbstractNavigation;
 use Feskol\Bundle\NavigationBundle\Navigation\Attribute\Navigation;
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationInterface;
 use Feskol\Navigation\Link;
 
 #[Navigation('testNavigation')]
-class NavigationClass implements NavigationInterface
+class NavigationClass extends AbstractNavigation implements NavigationInterface
 {
-    public function getItems(): array
+    public function getLinks(): array
     {
         return [
             (new Link())->setTitle('link-1'),
