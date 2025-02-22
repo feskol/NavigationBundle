@@ -1,9 +1,9 @@
 # Template
 
 The default template is located
-under [templates/_navigation.html.twig](../templates/_navigation.html.twig)
+under [templates/_navigation.html.twig](../templates/_navigation.html.twig).    
 The template is using twig blocks (`{% block %}`), so it's easy to
-override/extend:
+override/extend.
 
 ## How to create a navigation template
 
