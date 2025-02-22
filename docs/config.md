@@ -9,11 +9,11 @@ create a new file called `feskol_navigation.yaml`
 # config/packages/feskol_navigation.yaml
 
 feskol_navigation:
-    # activate to change the default template
-    #template: 'my-template.html.twig'
-    
-    # activate to render active links as normal link-tags instead of span-tag
-    #active_as_link: true
+    # Change the default template
+    template: 'my-navigation-template.html.twig'
+
+    # Default render active links as normal link-tags instead of span-tag
+    active_as_link: true
 ```
 
 ## Config explained
@@ -34,3 +34,7 @@ If the `active_as_link` config is set to `true`, then the links that have their
 
 If it's set to `false`, then the active links will be rendered as span-elements
 (`<span>Active Link</span>`).
+
+This is also a default setting, which can be overridden with the
+[`#[Navigation(activeAsLink: true)]`-Attribute](attribute.md) for every
+Navigation.
