@@ -51,10 +51,7 @@ class LinkService
         $currentRouteParams = $this->getCurrentRouteParams();
         $linkRouteParams = $link->getRouteParameters();
 
-        \ksort($linkRouteParams);
-        \ksort($currentRouteParams);
-
-        return $this->getCurrentRoute() === $link->getRoute() && $currentRouteParams === $linkRouteParams;
+        return $this->getCurrentRoute() === $link->getRoute() && $currentRouteParams == $linkRouteParams;
     }
 
     /**
