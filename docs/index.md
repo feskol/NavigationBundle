@@ -101,6 +101,8 @@ the `#[Navigation('headerNavigation')]`-Attribute:
 {{ feskol_navigation_render('headerNavigation') }}
 ```
 
+For more detail refer to [Twig functions](twig-functions.md).
+
 The output will be like this (assuming `Company B` is our active route, and
 we're logged in with `ROLE_USER`):
 
@@ -118,11 +120,13 @@ we're logged in with `ROLE_USER`):
 </ul>
 ```
 
-For more detail refer to [Twig functions](twig-functions.md).
+If you want to adjust the template, have a look at
+the [Template documentation](template.md)
 
 ## Learn more
+
 * [Navigation-Attribute](attribute.md)
 * [Twig functions](twig-functions.md)
 * [Config](config.md)
-* [Navigation Templates](template.md)
+* [Change template](template.md)
 

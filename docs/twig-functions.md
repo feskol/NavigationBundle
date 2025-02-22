@@ -4,7 +4,7 @@ The FeskolNavigationBundle provides `Twig functions` to render the navigation.
 
 > [!NOTE]
 > Before using the Twig functions, ensure you have a working navigation class.  
-> Refer to [how to create a navigation](basic.md) for guidance.
+> Refer to [how to create a navigation](index.md) for guidance.
 
 ## Function: `feskol_navigation_render()`
 
