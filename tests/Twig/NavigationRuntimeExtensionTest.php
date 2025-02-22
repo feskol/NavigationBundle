@@ -105,24 +105,6 @@ class NavigationRuntimeExtensionTest extends TestCase
         $this->assertEquals('activeAsLink: true', $result);
     }
 
-    public function testAdditionalContext(): void
-    {
-        $runtime = $this->getNavigationRuntimeExtension($this->getTwigEnvironment(
-            self::DEFAULT_TEMPLATE,
-            'testBool: {{ testBool ? "true" : "false" }}; testArray: {{ testArray.first }}, {{ testArray.second }}'
-        ));
-
-        $result = $runtime->renderNavigation('fooNavigation', [
-            'testBool' => true,
-            'testArray' => [
-                'first' => 'FirstElement',
-                'second' => 'SecondElement',
-            ],
-        ]);
-
-        $this->assertEquals('testBool: true; testArray: FirstElement, SecondElement', $result);
-    }
-
     private function getTwigEnvironment(
         string $templateName = 'index',
         string $templateContent = 'Index template',

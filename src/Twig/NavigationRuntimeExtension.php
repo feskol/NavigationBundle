@@ -33,7 +33,7 @@ class NavigationRuntimeExtension implements RuntimeExtensionInterface
      * @throws SyntaxError
      * @throws LoaderError
      */
-    public function renderNavigation(string $name, array $parameters = []): string
+    public function renderNavigation(string $name): string
     {
         $navigation = $this->navigationRegistry->getNavigation($name);
         if (null === $navigation) {
@@ -44,13 +44,13 @@ class NavigationRuntimeExtension implements RuntimeExtensionInterface
 
         $template = $this->navigationRegistry->getTemplate($name);
 
-        $context = \array_merge($parameters, [
+        $context = [
             'navigationTitle' => $navigation->getTitle(),
             'items' => $navigation->getLinks(),
             'options' => [
                 'activeAsLink' => $this->navigationRegistry->getActiveAsLink($name),
             ],
-        ]);
+        ];
 
         return $this->twig->render($template, $context);
     }
