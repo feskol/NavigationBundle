@@ -1,10 +1,15 @@
 # Navigation-Attribute
 
+The `#[Navigation]`-Attribute is for register your navigation.  
+Due to the attribute, your class is automatically tagged as
+`feskol_navigation.navigation` and passed to the [NavigationRegistry.php](../src/Navigation/NavigationRegistry.php).
+
 With the `#[Navigation]`-Attribute you can:
 
-- Set the Navigation-Name
+- Set `name` to give your navigation a name. This will be used to render the
+  navigation in the [Twig function](twig-functions.md).
 - Set `template` to render with
-- Set `ActiveAsLink` to render active links as <a>-element instead of <span>
+- Set `ActiveAsLink` to render active links as `<a>`-element instead of `<span>`
   -element
 
 ## Navigation-Name
@@ -73,5 +78,7 @@ class FooNavigation extends NavigationInterface
     // ...
 }
 ````
+
 > [!NOTE]
-> Note: The default ActiveAsLink behavior can be changed through the [config](config.md).
+> Note: The default ActiveAsLink behavior can be changed through
+> the [config](config.md).
