@@ -2,7 +2,7 @@
 
 The FeskolNavigationBundle provides `Twig functions` to render the navigation.
 
-> [!NOTE]
+> [!NOTE]  
 > Before using the Twig functions, ensure you have a working navigation class.  
 > Refer to [how to create a navigation](index.md) for guidance.
 
@@ -18,7 +18,7 @@ When calling `feskol_navigation_render()`, it renders the Twig template. If you 
 
 The implementation of the `feskol_navigation_render()` Twig function can be found in the [NavigationRuntimeExtension.php](../src/Twig/NavigationRuntimeExtension.php).
 
-### Usage xample
+### Usage example
 
 ```twig
 {{ feskol_navigation_render('headerNavigation') }}

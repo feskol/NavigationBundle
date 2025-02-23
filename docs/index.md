@@ -152,8 +152,9 @@ the [Template documentation](template.md).
 
 ## Learn more
 
-* [Navigation-Attribute](attribute.md)
+* [Navigation-Attribute: What can it do?](attribute.md)
 * [Twig functions](twig-functions.md)
 * [Config](config.md)
-* [Change template](template.md)
-
+* [Template: How to create my own?](template.md)
+* [Add additional Data like `icons` or `images` to your navigation](additional-link-data.md)
+* [How to render your navigation twice but with a different template:](same-navigation-different-template.md)

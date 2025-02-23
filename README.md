@@ -7,15 +7,22 @@ This bundle is an integration of
 the [feskol/php-navigation](https://github.com/feskol/php-navigation) library
 with extensions for Symfony applications.
 
+## Features
+
+- Automatically tracks a link's active status and makes it easy to check if a
+  parent navigation item has active child links.
+- Easy to set up and integrate into existing projects.
+- Flexible and extensible for complex navigation structures.
+
 ## Installation
 
-### Install the bundle
+### 1. Install the bundle
 
 ```bash
 composer require feskol/navigation-bundle
 ```
 
-### Enable the Bundle
+### 2. Enable the Bundle
 
 FeskolNavigationBundle should be automatically enabled and configured, thanks
 to [Flex](https://symfony.com/doc/current/setup/flex.html).
@@ -32,7 +39,7 @@ return [
 ];
 ```
 
-### Configure the bundle (optional)
+### 3. Configure the bundle (optional)
 
 There are a few configurations available for this bundle. To make use of it,
 start by creating a new config file:
