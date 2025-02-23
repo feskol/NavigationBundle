@@ -37,11 +37,18 @@ For example:
 {%- endblock -%}
 ```
 
+Now you need to tell your navigation class to load your template by:
+
+- changing the default template in the [config](config.md)
+- only changing the template for a single Navigation with the 
+  [`#[Navigation('headerNavigation', template: '_my-template.html.twig')]`-Attribute](attribute.md)
+
 ## Build from scratch
 
 If you want to build your
 navigation without using the provided blocks, you need to know what `variables`
 are available to use.  
 Refer to
-the [src/Twig/NavigationRuntimeExtension.php](../src/Twig/NavigationRuntimeExtension.php)
+the [
+`src/Twig/NavigationRuntimeExtension.php`](../src/Twig/NavigationRuntimeExtension.php)
 `renderNavigation()` method where you can find the `$context` array.

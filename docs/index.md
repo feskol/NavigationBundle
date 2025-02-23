@@ -11,8 +11,9 @@ To create a navigation class, you need to meet the following requirements:
 - Implement a `getLinks()` method that returns **array reference** of objects
   implementing `Feskol\Bundle\NavigationBundle\Navigation\Link\LinkInterface`.
 
-You don't need to figure out how to implement because there are already provided
-classes you can use.  
+There is already a class you can extend from to meet the requirements: 
+`Feskol\Bundle\NavigationBundle\Navigation\AbstractNavigation`. 
+
 Here is an example of how a navigation class will look with the provided
 classes:
 
@@ -30,6 +31,32 @@ class HeaderNavigation extends AbstractNavigation
 That's it. With this, you now meet all the requirements for a navigation
 class.  
 The only thing missing are now the links.
+---
+To add links, you can use the provided methods from `AbstractNavigation`:
+
+```php
+use Feskol\Bundle\NavigationBundle\Navigation\Attribute\Navigation;
+use Feskol\Bundle\NavigationBundle\Navigation\AbstractNavigation;
+use Feskol\Bundle\NavigationBundle\Navigation\Link\Link;
+
+#[Navigation('headerNavigation')]
+class HeaderNavigation extends AbstractNavigation
+{
+    public function __construct() {
+    
+        // set all Links
+        $linksArray = [
+            (new Link())->setTitle('Dashboard')->setRoute('app_dashboard'),
+            (new Link())->setTitle('Contact')->setRoute('app_contact'),
+        ];
+        $this->setLinks($linksArray);
+        
+        // add one Link
+        $link = (new Link())->setTitle('About us')->setRoute('app_about_us');
+        $this->addLink($link);
+    }
+}
+```
 
 ---
 Navigation classes are standard Symfony services. So you can autowire any
@@ -121,7 +148,7 @@ we're logged in with `ROLE_USER`):
 ```
 
 If you want to adjust the template, have a look at
-the [Template documentation](template.md)
+the [Template documentation](template.md).
 
 ## Learn more
 

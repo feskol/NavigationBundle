@@ -60,7 +60,7 @@ That's it. Now when you call the
 `{{ feskol_navigation_render('fooNavigation') }}`, it will render with your
 custom template.
 
-> [!NOTE]
+> [!NOTE]  
 > The default template can be changed through the [config](config.md).
 
 ## ActiveAsLink
@@ -79,6 +79,6 @@ class FooNavigation extends NavigationInterface
 }
 ````
 
-> [!NOTE]
+> [!NOTE]  
 > Note: The default ActiveAsLink behavior can be changed through
 > the [config](config.md).
