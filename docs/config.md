@@ -18,14 +18,14 @@ feskol_navigation:
 
 ## Config explained
 
-### `template`
+### `template` (default: `@FeskolNavigation/_navigation.html.twig`)
 
 With the `template` config, you can change the default template for rendering
 Navigations.  
 Refer to [How to create a navigation template](template.md) for template
 guidance.
 
-### `active_as_link`
+### `active_as_link` (default: `true`)
 
 If the `active_as_link` config is set to `true`, then the links that have their
 `isActive`-status set to `true`, will also be rendered as normal links (

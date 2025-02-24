@@ -33,7 +33,7 @@ class FeskolNavigationBundle extends AbstractBundle
                 ->end()
                 ->booleanNode('active_as_link')
                     ->info('Set true to render an active navigation item as a link tag')
-                    ->defaultFalse()
+                    ->defaultTrue()
                 ->end()
             ->end()
         ;
