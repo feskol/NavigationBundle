@@ -15,31 +15,21 @@ With the `#[Navigation]`-Attribute you can:
 
 ## Navigation-Name
 
-The navigation name can be set directly
+The navigation name can be set:
 
 ````php
 use Feskol\Bundle\NavigationBundle\Navigation\Attribute\Navigation;
 use Feskol\Bundle\NavigationBundle\Navigation\NavigationInterface;
 
+// Use either
 #[Navigation('fooNavigation')]
-class FooNavigation extends NavigationInterface
-{
-    // ...
-}
-````
-
-Or:
-
-```php
-use Feskol\Bundle\NavigationBundle\Navigation\Attribute\Navigation;
-use Feskol\Bundle\NavigationBundle\Navigation\NavigationInterface;
-
+// Or
 #[Navigation(name: 'fooNavigation')]
 class FooNavigation extends NavigationInterface
 {
     // ...
 }
-```
+````
 
 > [!IMPORTANT]  
 > The `name` must be unique! If you try to add a navigation with a name that
@@ -62,11 +52,11 @@ class FooNavigation extends NavigationInterface
 ````
 
 That's it. Now when you call the
-`{{ feskol_navigation_render('fooNavigation') }}`, it will render with your
+`{{ feskol_navigation_render('fooNavigation') }}`, it will render your
 custom template.
 
 > [!NOTE]  
-> The default template can be changed through the [config](config.md).
+> The default template can be changed through the [config](config.md#template-default-feskolnavigation_navigationhtmltwig).
 
 ## ActiveAsLink
 
@@ -86,4 +76,4 @@ class FooNavigation extends NavigationInterface
 
 > [!NOTE]  
 > Note: The default ActiveAsLink behavior can be changed through
-> the [config](config.md).
+> the [config](config.md#active_as_link-default-true).
