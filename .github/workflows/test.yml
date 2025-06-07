@@ -51,7 +51,7 @@ jobs:
             symfony: 6.1.*
           - description: 'Symfony 7'
             php: '8.2'
-            symfony: ^7.2
+            symfony: ^7.3
             dev: true
 
           - description: 'Dev dependencies'
