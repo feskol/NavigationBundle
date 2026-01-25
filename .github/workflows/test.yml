@@ -45,17 +45,18 @@ jobs:
             php: '8.3'
           - description: 'PHP-version test'
             php: '8.4'
-
+          - description: 'PHP-version test'
+            php: '8.5'
           - description: 'Symfony 6.1'
             php: '8.1'
             symfony: 6.1.*
           - description: 'Symfony 7'
-            php: '8.2'
-            symfony: ^7.3
+            php: '8.4'
+            symfony: ^7.4
             dev: true
 
           - description: 'Dev dependencies'
-            php: '8.3'
+            php: '8.4'
             dev: true
 
     name: PHP ${{ matrix.php }} tests (${{ matrix.description }})
